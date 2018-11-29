@@ -106,7 +106,7 @@ else
 	done
 fi
 cd /soft/shadowsocks
-pip install --upgrade pip
+pip install --upgrade pip setuptools
 pip install -r requirements.txt
 echo "Generating config file..."
 cp apiconfig.py userapiconfig.py
