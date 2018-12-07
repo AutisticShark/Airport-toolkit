@@ -2,6 +2,12 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 cat << "EOF" 
+   _____       _      _     __      ________      __ 
+  / ___/__  __(_)____(_)___/ /___ _/ / ____/___ _/ /_
+  \__ \/ / / / / ___/ / __  / __ `/ / /   / __ `/ __/
+ ___/ / /_/ / / /__/ / /_/ / /_/ / / /___/ /_/ / /_  
+/____/\__,_/_/\___/_/\__,_/\__,_/_/\____/\__,_/\__/  
+                                                     
 Author: SuicidalCat
 Github: https://github.com/SuicidalCat/Airport-toolkit                                
 EOF
