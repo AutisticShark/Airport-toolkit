@@ -4,7 +4,7 @@ After=network.target remote-fs.target nss-lookup.target
 
 [Service]
 Type=forking
-ExecStart=/soft/logrun.sh
+ExecStart=/usr/bin/python /soft/shadowsocks/server.py m>> ssserver.log 2>&1 &
 ExecStop=/soft/stop.sh
 
 [Install]
