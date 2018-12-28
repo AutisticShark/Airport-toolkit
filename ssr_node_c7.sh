@@ -235,32 +235,34 @@ do_service(){
 	chmod 754 ssr_node.service && mv ssr_node.service /usr/lib/systemd/system 
 }
 while :; do echo
-		echo -n "Do you want to enable BBR feature(from mainline kernel) and optimizate the system?(Y/N)"
-		read is_bbr
-		if [[ ${is_bbr} != "y" && ${is_bbr} != "Y" && ${is_bbr} != "N" && ${is_bbr} != "n" ]]; then
-			echo -n "Bad answer! Please only input number Y or N"
-		elif [[ ${is_bbr} == "y" || ${is_bbr} == "Y" ]]; then
-			do_bbr
-		else
-			break
-		fi
+	echo -n "Do you want to enable BBR feature(from mainline kernel) and optimizate the system?(Y/N)"
+	read is_bbr
+	if [[ ${is_bbr} != "y" && ${is_bbr} != "Y" && ${is_bbr} != "N" && ${is_bbr} != "n" ]]; then
+		echo -n "Bad answer! Please only input number Y or N"
+	else
+		break
+	fi
 done
 while :; do echo
-		echo -n "Do you want to register SSR Node as system service?(Y/N)"
-		read is_service
-		if [[ ${is_service} != "y" && ${is_service} != "Y" && ${is_service} != "N" && ${is_service} != "n" ]]; then
-			echo -n "Bad answer! Please only input number Y or N"
-		elif [[ ${is_service} == "y" || ${is_service} == "Y" ]]; then
-			do_service
-		else
-			break
-		fi
+	echo -n "Do you want to register SSR Node as system service?(Y/N)"
+	read is_service
+	if [[ ${is_service} != "y" && ${is_service} != "Y" && ${is_service} != "N" && ${is_service} != "n" ]]; then
+		echo -n "Bad answer! Please only input number Y or N"
+	else
+		break
+	fi
 done
+if [[ ${is_bbr} == "y" || ${is_bbr} == "Y" ]]; then
+	do_bbr
+fi
+if [[ ${is_service} == "y" || ${is_service} == "Y" ]]; then
+	do_service
+fi
 echo "System require a reboot to complete the installation process, press Y to continue, or press any key else to exit this script."
 read is_reboot
 if [[ ${is_reboot} == "y" || ${is_reboot} == "Y" ]]; then
-    reboot
+  reboot
 else
-    echo -e "Reboot has been canceled..."
-    exit 0
+  echo -e "Reboot has been canceled..."
+	exit 0
 fi
