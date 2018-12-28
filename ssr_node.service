@@ -1,11 +1,9 @@
 [Unit]
 Description=Shadowsocksr Node Service
-After=network.target remote-fs.target nss-lookup.target
 
 [Service]
-Type=forking
-ExecStart=/usr/bin/python /soft/shadowsocks/server.py m>> ssserver.log 2>&1 &
-ExecStop=/soft/stop.sh
+ExecStart=/usr/bin/nohup /usr/bin/python /soft/shadowsocks/server.py m>> /soft/shadowsocks/ssserver.log 2>&1 &
+ExecStop=/usr/bin/bash /soft/shadowsocks/stop.sh
 
 [Install]
 WantedBy=multi-user.target
