@@ -251,6 +251,11 @@ EOF
 EOF
 	sysctl -p
 }
+do_service(){
+	echo "Writting system config..."
+	wget https://raw.githubusercontent.com/SuicidalCat/Airport-toolkit/master/ssr_node.service
+	chmod 754 && mv ssr_node.service /usr/lib/systemd/system 
+}
 echo "System require a reboot to complete the installation process, press Y to continue, or press any key else to exit this script."
 read is_reboot
 if [[ ${is_reboot} == "y" || ${is_reboot} == "Y" ]]; then
