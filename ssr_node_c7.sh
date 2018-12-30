@@ -232,7 +232,9 @@ EOF
 do_service(){
 	echo "Writting system config..."
 	wget https://raw.githubusercontent.com/SuicidalCat/Airport-toolkit/master/ssr_node.service
-	chmod 754 ssr_node.service && mv ssr_node.service /usr/lib/systemd/system 
+	chmod 754 ssr_node.service && mv ssr_node.service /usr/lib/systemd/system
+	echo "Starting SSR Node Service..."
+	systemctl enable ssr_node && systemctl start ssr_node
 }
 while :; do echo
 	echo -n "Do you want to enable BBR feature(from mainline kernel) and optimizate the system?(Y/N)"
