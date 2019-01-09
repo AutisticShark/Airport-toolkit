@@ -77,8 +77,8 @@ apt install git python python-setuptools python-pip build-essential ntpdate htop
 echo "Please select correct system timezone for your node."
 dpkg-reconfigure tzdata
 echo "Installing libsodium..."
-wget https://github.com/jedisct1/libsodium/releases/download/1.0.16/libsodium-1.0.16.tar.gz
-tar xf libsodium-1.0.16.tar.gz && cd libsodium-1.0.16
+wget https://github.com/jedisct1/libsodium/releases/download/1.0.16/libsodium-1.0.17.tar.gz
+tar xf libsodium-1.0.17.tar.gz && cd libsodium-1.0.17
 ./configure && make -j2 && make install
 echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
 ldconfig
@@ -92,7 +92,7 @@ cd /soft
 echo "Checking if there any exist Shadowsocksr server software..."
 if [ ! -d "shadowsocks" ]; then
 	echo "Installing Shadowsocksr server from GitHub..."
-	cd /tmp && git clone -b manyuser https://github.com/esdeathlove/shadowsocks.git
+	cd /tmp && git clone -b manyuser https://github.com/NimaQu/shadowsocks.git
 	mv -f shadowsocks /soft
 else
 	while :; do echo
