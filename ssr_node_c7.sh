@@ -79,8 +79,8 @@ systemctl stop firewalld && systemctl disable firewalld
 echo "Setting system timezone..."
 timedatectl set-timezone Asia/Taipei && systemctl stop ntpd.service && ntpdate us.pool.ntp.org
 echo "Installing libsodium..."
-wget https://github.com/jedisct1/libsodium/releases/download/1.0.16/libsodium-1.0.16.tar.gz
-tar xf libsodium-1.0.16.tar.gz && cd libsodium-1.0.16
+wget https://github.com/jedisct1/libsodium/releases/download/1.0.17/libsodium-1.0.17.tar.gz
+tar xf libsodium-1.0.17.tar.gz && cd libsodium-1.0.17
 ./configure && make -j2 && make install
 echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
 ldconfig
