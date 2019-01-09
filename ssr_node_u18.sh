@@ -77,7 +77,7 @@ apt install git python python-setuptools python-pip build-essential ntpdate htop
 echo "Please select correct system timezone for your node."
 dpkg-reconfigure tzdata
 echo "Installing libsodium..."
-wget https://github.com/jedisct1/libsodium/releases/download/1.0.16/libsodium-1.0.17.tar.gz
+wget https://github.com/jedisct1/libsodium/releases/download/1.0.17/libsodium-1.0.17.tar.gz
 tar xf libsodium-1.0.17.tar.gz && cd libsodium-1.0.17
 ./configure && make -j2 && make install
 echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
