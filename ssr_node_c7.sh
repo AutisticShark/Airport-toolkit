@@ -14,7 +14,7 @@ Author: Toxic Cat
 Github: https://github.com/Toxic-Cat/Airport-toolkit                                 
 EOF
 echo "Shadowsocksr server installation script for CentOS 7 x64"
-[ $(id -u) != "0" ] && { echo "Error: You must be root to run this script"; exit 1; }
+[ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 ARG_NUM=$#
 TEMP=`getopt -o hvV --long is_auto:,connection_method:,is_mu:,webapi_url:,webapi_token:,db_ip:,db_name:,db_user:,db_password:,node_id:-- "$@" 2>/dev/null`
 [ $? != 0 ] && echo "ERROR: unknown argument!" && exit 1
