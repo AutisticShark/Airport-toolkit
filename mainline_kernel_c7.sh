@@ -25,6 +25,7 @@ do_elrepo(){
 do_kernel(){
     echo "Install mainline kernel"
     yum --enablerepo=elrepo-kernel install kernel-ml -y
+    grub2-set-default 0
 }
 
 do_headers(){
