@@ -55,7 +55,7 @@ do_status_check(){
     uname -r
     echo "BBR module status:"
     lsmod | grep bbr
-    echo "BBR system configuration status"
+    echo "BBR system configuration status:"
     sysctl net.ipv4.tcp_available_congestion_control
     sysctl net.ipv4.tcp_congestion_control
     echo "Kernel related rpm packages:"
