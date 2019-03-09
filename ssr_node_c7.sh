@@ -2,16 +2,18 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 cat << "EOF"
-   _____       _      _     __      ________      __ 
-  / ___/__  __(_)____(_)___/ /___ _/ / ____/___ _/ /_
-  \__ \/ / / / / ___/ / __  / __ `/ / /   / __ `/ __/
- ___/ / /_/ / / /__/ / /_/ / /_/ / / /___/ /_/ / /_  
-/____/\__,_/_/\___/_/\__,_/\__,_/_/\____/\__,_/\__/  
-                                                     
-Author: SuicidalCat
-Github: https://github.com/SuicidalCat/Airport-toolkit                                  
+ ______                               ____              __      
+/\__  _\               __            /\  _`\           /\ \__   
+\/_/\ \/   ___   __  _/\_\    ___    \ \ \/\_\     __  \ \ ,_\  
+   \ \ \  / __`\/\ \/'\/\ \  /'___\   \ \ \/_/_  /'__`\ \ \ \/  
+    \ \ \/\ \L\ \/>  </\ \ \/\ \__/    \ \ \L\ \/\ \L\.\_\ \ \_ 
+     \ \_\ \____//\_/\_\\ \_\ \____\    \ \____/\ \__/.\_\\ \__\
+      \/_/\/___/ \//\/_/ \/_/\/____/     \/___/  \/__/\/_/ \/__/
+                                                                
+Author: Toxic Cat
+Github: https://github.com/Toxic-Cat/Airport-toolkit                                 
 EOF
-echo "Proxy node server installation script for CentOS 7 x64"
+echo "Shadowsocksr server installation script for CentOS 7 x64"
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script"; exit 1; }
 ARG_NUM=$#
 TEMP=`getopt -o hvV --long is_auto:,connection_method:,is_mu:,webapi_url:,webapi_token:,db_ip:,db_name:,db_user:,db_password:,node_id:-- "$@" 2>/dev/null`
