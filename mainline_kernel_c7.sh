@@ -67,7 +67,7 @@ do_status_check(){
 
 do_update_kernel(){
     echo "Upgrade mainline kernel and related packages"
-    yum --enablerepo=elrepo-kernel kernel-ml kernel-ml-headers kernel-ml-tools-libs -y
+    yum --enablerepo=elrepo-kernel update kernel-ml kernel-ml-headers kernel-ml-tools-libs -y
 }
 
 do_reboot(){
