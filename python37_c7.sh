@@ -26,7 +26,13 @@ if [[ $python37_version == 3.7.* ]]; then
         echo "Download failed!"
         exit 0
     else
-        tar -zxf $python37_version.tgz
+        tar -zxf Python-$python37_version.tgz
+        cd Python-$python37_version
+    fi
+else
+    echo "Input error! You should enter version number like 3.7.x"
+    exit 0
+fi
 #Get server total CPU core number
 cpu_core_num = $(cat /proc/cpuinfo | grep processor | wc -l)
 echo "Clean yum cache..."
