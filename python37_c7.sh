@@ -43,4 +43,16 @@ echo "Install compile tool..."
 yum install gcc make -y
 echo "Install necessary library..."
 yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel libffi-devel -y
-
+echo "Start installation process..."
+./configure prefix=/usr/local/python3 --enable-optimizations
+make -j$cpu_core_num && make install
+echo "Remove default python soft link..."
+\rm /usr/bin/python
+echo "Remove default python-pip soft link..."
+\rm /usr/bin/pip
+echo "Add python3.7 as system default python version..."
+ln -s /usr/local/python3/bin/python3.7 /usr/bin/python
+echo "Add pip3.7 as system default python-pip version..."
+ln -s /usr/local/python3/bin/pip3.7 /usr/bin/pip
+echo "Replace yum and related configuration to avoid fatal error..."
+sed -i -e "s%#!/usr/bin/python%#!/usr/bin/python2%g" /usr/bin/yum
