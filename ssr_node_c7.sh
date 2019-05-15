@@ -122,7 +122,7 @@ cp config.json user-config.json
 if [[ ${is_auto} != "y" ]]; then
 	#Choose the connection method
 	while :; do echo
-		echo -e "Please select the way your node server connection method:"
+		echo -e "请选择节点服务器连接方式:"
 		echo -e "\t1. WebAPI"
 		echo -e "\t2. Remote Database"
 		read -p "Please input a number:(Default 2 press Enter) " connection_method
@@ -134,7 +134,7 @@ if [[ ${is_auto} != "y" ]]; then
 		fi			
 	done
 	while :; do echo
-		echo -n "Do you want to enable multi user in single port feature?(Y/N)"
+		echo -n "是否启用单端口多用户?(Y/N)"
 		read is_mu
 		if [[ ${is_mu} != "y" && ${is_mu} != "Y" && ${is_mu} != "N" && ${is_mu} != "n" ]]; then
 			echo -n "Bad answer! Please only input number Y or N"
@@ -239,7 +239,7 @@ do_service(){
 	systemctl enable ssr_node && systemctl start ssr_node
 }
 while :; do echo
-	echo -n "Do you want to enable BBR feature(from mainline kernel) and optimizate the system?(Y/N)"
+	echo -n "是否启用BBR？(Y/N)"
 	read is_bbr
 	if [[ ${is_bbr} != "y" && ${is_bbr} != "Y" && ${is_bbr} != "N" && ${is_bbr} != "n" ]]; then
 		echo -n "Bad answer! Please only input number Y or N"
@@ -248,7 +248,7 @@ while :; do echo
 	fi
 done
 while :; do echo
-	echo -n "Do you want to register SSR Node as system service?(Y/N)"
+	echo -n "是否要将SSR进程注册为系统服务?(Y/N)"
 	read is_service
 	if [[ ${is_service} != "y" && ${is_service} != "Y" && ${is_service} != "N" && ${is_service} != "n" ]]; then
 		echo -n "Bad answer! Please only input number Y or N"
@@ -262,7 +262,7 @@ fi
 if [[ ${is_service} == "y" || ${is_service} == "Y" ]]; then
 	do_service
 fi
-echo "System require a reboot to complete the installation process, press Y to continue, or press any key else to exit this script."
+echo "系统需要重新启动才能完成安装过程，按Y继续，或按任何其他键退出此脚本."
 read is_reboot
 if [[ ${is_reboot} == "y" || ${is_reboot} == "Y" ]]; then
   reboot
