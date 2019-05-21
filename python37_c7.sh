@@ -22,8 +22,8 @@ read python37_version
 if [[ $python37_version == 3.7.* ]]; then
     echo "Download python source file..."
     wget https://www.python.org/ftp/python/$python37_version/Python-$python37_version.tgz
-    python_file_name = "Python-"$python37_version".tgz"
-    if [ ! -e "$python_file_name" ]; then
+    sleep 3
+    if [ ! -e "Python-$python37_version.tgz" ]; then
         echo "Download failed!"
         exit 0
     else
