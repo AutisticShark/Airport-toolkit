@@ -22,7 +22,7 @@ read python37_version
 if [[ $python37_version == 3.7.* ]]; then
     echo "Download python source file..."
     wget https://www.python.org/ftp/python/$python37_version/Python-$python37_version.tgz
-    sleep 3
+    sleep 1
     if [ ! -e "Python-$python37_version.tgz" ]; then
         echo "Download failed!"
         exit 0
@@ -35,7 +35,7 @@ else
     exit 0
 fi
 #Get server total CPU core number
-cpu_core_num = $(cat /proc/cpuinfo | grep processor | wc -l)
+$cpu_core_num = $(cat /proc/cpuinfo | grep processor | wc -l)
 echo "Clean yum cache..."
 yum clean all && rm -rf /var/cache/yum
 echo "Update system software..."
