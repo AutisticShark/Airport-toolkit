@@ -82,7 +82,7 @@ echo "Setting system timezone..."
 timedatectl set-timezone Asia/Taipei && systemctl stop ntpd.service && ntpdate us.pool.ntp.org
 echo "Installing libsodium..."
 wget https://codeload.github.com/jedisct1/libsodium/tar.gz/1.0.18-RELEASE
-tar xf libsodium-1.0.18-RELEASE.tar.gz && cd libsodium-1.0.18-RELEASE
+tar xf 1.0.18-RELEASE && cd libsodium-1.0.18-RELEASE
 ./configure && make -j2 && make install
 echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
 ldconfig
