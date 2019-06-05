@@ -86,7 +86,7 @@ tar xf 1.0.18-RELEASE && cd libsodium-1.0.18-RELEASE
 ./configure && make -j2 && make install
 echo /usr/local/lib > /etc/ld.so.conf.d/usr_local_lib.conf
 ldconfig
-cd ../ && rm -rf libsodium*
+cd ../ && rm -rf libsodium* 1.0.18*
 if [ ! -d "/soft" ]; then
 	mkdir /soft
 else
