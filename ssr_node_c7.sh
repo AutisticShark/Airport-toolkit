@@ -70,6 +70,20 @@ if [[ ${is_auto} != "y" ]]; then
     	exit 0
 	fi
 fi
+echo "Checking if there any exist Shadowsocksr server software..."
+if [ ! -d "/soft/shadowsocks" ]; then
+	while :; do echo
+		echo -n "Detect exist shadowsocks server installation! If you continue this install, all the previous configuration will be lost! Continue?(Y/N)"
+		read is_clean_old
+		if [[ ${is_clean_old} != "y" && ${is_clean_old} != "Y" && ${is_clean_old} != "N" && ${is_clean_old} != "n" ]]; then
+			echo -n "Bad answer! Please only input number Y or N"
+		elif [[ ${is_clean_old} == "y" && ${is_clean_old} == "Y" ]]; then
+			\rm -rf /soft
+			break
+		else
+			exit 0
+		fi
+fi
 echo "Updatin exsit package..."
 yum clean all && rm -rf /var/cache/yum && yum update -y
 echo "Install necessary package..."
@@ -82,32 +96,7 @@ echo "Setting system timezone..."
 timedatectl set-timezone Asia/Taipei && systemctl stop ntpd.service && ntpdate us.pool.ntp.org
 echo "Installing libsodium..."
 yum install libsodium -y
-if [ ! -d "/soft" ]; then
-	mkdir /soft
-else
-	echo "/soft directory is already exist..."
-fi
-cd /soft
-echo "Checking if there any exist Shadowsocksr server software..."
-if [ ! -d "shadowsocks" ]; then
-	echo "Installing Shadowsocksr server from GitHub..."
-	cd /tmp && git clone -b manyuser https://github.com/NimaQu/shadowsocks.git
-	mv -f shadowsocks /soft
-else
-	while :; do echo
-		echo -n "The Shadowsocksr server software is already exsit! Do you want to upgrade it?(Y/N)"
-		read is_mu
-		if [[ ${is_mu} != "y" && ${is_mu} != "Y" && ${is_mu} != "N" && ${is_mu} != "n" ]]; then
-			echo -n "Bad answer! Please only input number Y or N"
-		elif [[ ${is_mu} == "y" && ${is_mu} == "Y" ]]; then
-			echo "Upgrading Shadowsocksr server software..."
-			cd shadowsocks && git pull
-			break
-		else
-			exit 0
-		fi
-	done
-fi
+mkdir -p /soft/shadowsocks
 cd /soft/shadowsocks
 pip install --upgrade pip setuptools
 pip install -r requirements.txt
@@ -262,9 +251,11 @@ while :; do echo
 	read is_salt_minion
 	if [[ ${is_salt_minion} != "y" && ${is_salt_minion} != "Y" && ${is_salt_minion} != "N" && ${is_salt_minion} != "n" ]]; then
 		echo -n "Bad answer! Please only input number Y or N"
-	else
+	elif [[ ${is_salt_minion} == "y" && ${is_salt_minion} == "Y"]]; then
 		echo -n "Please enter Salt Master's IP address:"
 		read salt_master_ip
+		break
+	else
 		break
 	fi
 done
