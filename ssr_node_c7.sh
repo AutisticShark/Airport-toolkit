@@ -71,7 +71,7 @@ if [[ ${is_auto} != "y" ]]; then
 	fi
 fi
 echo "Checking if there any exist Shadowsocksr server software..."
-if [ ! -d "/soft/shadowsocks" ]; then
+if [ -d "/soft/shadowsocks" ]; then
 	while :; do echo
 		echo -n "Detect exist shadowsocks server installation! If you continue this install, all the previous configuration will be lost! Continue?(Y/N)"
 		read is_clean_old
@@ -255,7 +255,7 @@ while :; do echo
 	read is_salt_minion
 	if [[ ${is_salt_minion} != "y" && ${is_salt_minion} != "Y" && ${is_salt_minion} != "N" && ${is_salt_minion} != "n" ]]; then
 		echo -n "Bad answer! Please only input number Y or N"
-	elif [[ ${is_salt_minion} == "y" && ${is_salt_minion} == "Y"]]; then
+	elif [[ ${is_salt_minion} == "y" && ${is_salt_minion} == "Y" ]]; then
 		echo -n "Please enter Salt Master's IP address:"
 		read salt_master_ip
 		break
