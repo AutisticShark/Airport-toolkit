@@ -97,7 +97,10 @@ echo "Setting system timezone..."
 timedatectl set-timezone Asia/Taipei && systemctl stop ntpd.service && ntpdate us.pool.ntp.org
 echo "Installing libsodium..."
 yum install libsodium -y
-mkdir -p /soft/shadowsocks
+mkdir /soft
+echo "Installing Shadowsocksr server from GitHub..."	
+cd /tmp && git clone -b manyuser https://github.com/NimaQu/shadowsocks.git	
+mv -f shadowsocks /soft
 cd /soft/shadowsocks
 pip install --upgrade pip setuptools
 pip install -r requirements.txt
