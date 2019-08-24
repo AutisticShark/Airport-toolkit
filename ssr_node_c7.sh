@@ -83,6 +83,7 @@ if [ ! -d "/soft/shadowsocks" ]; then
 		else
 			exit 0
 		fi
+	done
 fi
 echo "Updatin exsit package..."
 yum clean all && rm -rf /var/cache/yum && yum update -y
