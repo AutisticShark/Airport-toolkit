@@ -87,8 +87,9 @@ if [ -d "/soft/shadowsocks" ]; then
 fi
 echo "Updatin exsit package..."
 yum clean all && rm -rf /var/cache/yum && yum update -y
+echo "Configurating EPEL release..."
+rpm -ivh https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm && yum makecache
 echo "Install necessary package..."
-yum install epel-release -y && yum makecache
 yum install python-pip git net-tools htop ntp -y
 yum install gcc gcc-c++ gcc-g77 flex bison autoconf automake bzip2-devel zlib-devel ncurses-devel libjpeg-devel libpng-devel libtiff-devel freetype-devel pam-devel openssl-devel libxml2-devel gettext-devel pcre-devel -y
 echo "Disabling firewalld..."
