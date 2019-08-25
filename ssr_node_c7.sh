@@ -77,7 +77,7 @@ if [ -d "/soft/shadowsocks" ]; then
 		read is_clean_old
 		if [[ ${is_clean_old} != "y" && ${is_clean_old} != "Y" && ${is_clean_old} != "N" && ${is_clean_old} != "n" ]]; then
 			echo -n "Bad answer! Please only input number Y or N"
-		elif [[ ${is_clean_old} == "y" && ${is_clean_old} == "Y" ]]; then
+		elif [[ ${is_clean_old} == "y" || ${is_clean_old} == "Y" ]]; then
 			rm -rf /soft
 			break
 		else
