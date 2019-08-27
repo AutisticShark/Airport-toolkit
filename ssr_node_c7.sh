@@ -227,7 +227,7 @@ do_service(){
 	echo "Starting SSR Node Service..."
 	systemctl enable ssr_node && systemctl start ssr_node
 }
-do_saltstack_minion(){
+do_salt_minion(){
 	echo "Installing Salt Minion..."
 	curl -L https://bootstrap.saltstack.com -o install_salt.sh && sudo sh install_salt.sh -P
 	echo "Writing Salt config..."
