@@ -19,7 +19,7 @@ echo "Mainline kernel and related packages maintenance script for CentOS 7 x64"
 do_elrepo(){
     echo "Install and configure the elrepo"
     rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-	rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
+	rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-4.el7.elrepo.noarch.rpm
 }
 
 do_kernel(){
