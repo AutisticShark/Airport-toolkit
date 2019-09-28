@@ -221,7 +221,7 @@ EOF
 }
 do_service(){
 	echo "Writting system config..."
-	wget https://raw.githubusercontent.com/SuicidalCat/Airport-toolkit/master/ssr_node.service
+	wget -O ssr_node.service https://raw.githubusercontent.com/SuicidalCat/Airport-toolkit/master/ssr_node.service.el7
 	chmod 754 ssr_node.service && mv ssr_node.service /usr/lib/systemd/system
 	echo "Starting SSR Node Service..."
 	systemctl enable ssr_node && systemctl start ssr_node
