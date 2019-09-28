@@ -90,7 +90,7 @@ dnf clean all && dnf update -y
 echo "Configurating EPEL release..."
 rpm -ivh https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/e/epel-release-8-5.el8.noarch.rpm && dnf makecache
 echo "Install necessary package..."
-dnf install git htop chrony python3-pip -y
+dnf install python3 python3-pip git htop chrony -y
 echo "Disabling firewalld..."
 systemctl stop firewalld && systemctl disable firewalld
 echo "Setting system timezone..."
@@ -216,7 +216,7 @@ EOF
 }
 do_service(){
 	echo "Writting system config..."
-	wget https://raw.githubusercontent.com/SuicidalCat/Airport-toolkit/master/ssr_node.service
+	wget -O ssr_node.service https://raw.githubusercontent.com/SuicidalCat/Airport-toolkit/master/ssr_node.service.el8
 	chmod 754 ssr_node.service && mv ssr_node.service /usr/lib/systemd/system
 	echo "Starting SSR Node Service..."
 	systemctl enable ssr_node && systemctl start ssr_node
