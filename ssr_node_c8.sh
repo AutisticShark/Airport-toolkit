@@ -100,6 +100,7 @@ dnf install libsodium -y
 mkdir /soft
 echo "Installing Shadowsocksr server from GitHub..."	
 cd /tmp && git clone -b manyuser https://github.com/Anankke/shadowsocks-mod.git
+mv shadowsocks-mod shadowsocks
 mv -f shadowsocks /soft
 cd /soft/shadowsocks
 pip3 install --upgrade pip setuptools
