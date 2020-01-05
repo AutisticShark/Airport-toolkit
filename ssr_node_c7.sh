@@ -99,7 +99,7 @@ echo "Installing libsodium..."
 yum install libsodium -y
 mkdir /soft
 echo "Installing Shadowsocksr server from GitHub..."	
-cd /tmp && git clone -b manyuser https://github.com/NimaQu/shadowsocks.git	
+cd /tmp && git clone -b manyuser https://github.com/Anankke/shadowsocks-mod.git	
 mv -f shadowsocks /soft
 cd /soft/shadowsocks
 pip install --upgrade pip setuptools
