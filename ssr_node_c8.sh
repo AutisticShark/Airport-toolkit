@@ -94,7 +94,7 @@ dnf install python3 python3-pip git htop chrony -y
 echo "Disabling firewalld..."
 systemctl stop firewalld && systemctl disable firewalld
 echo "Setting system timezone..."
-timedatectl set-timezone Asia/Taipei && systemctl enable chronyd && systemctl start chronyd
+timedatectl set-timezone Asia/Taipei
 echo "Installing libsodium..."
 dnf install libsodium -y
 mkdir /soft
