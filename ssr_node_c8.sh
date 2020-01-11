@@ -88,7 +88,7 @@ fi
 echo "Updatin exsit package..."
 dnf clean all && dnf update -y
 echo "Configurating EPEL release..."
-rpm -ivh https://dl.fedoraproject.org/pub/epel/8/Everything/x86_64/Packages/e/epel-release-8-5.el8.noarch.rpm && dnf makecache
+dnf install epel-release -y && dnf makecache
 echo "Install necessary package..."
 dnf install python3 python3-pip git htop chrony -y
 echo "Disabling firewalld..."
