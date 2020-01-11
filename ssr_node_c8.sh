@@ -218,9 +218,9 @@ EOF
 do_service(){
 	echo "Writting system config..."
 	wget --no-check-certificate -O ssr_node.service https://raw.githubusercontent.com/Toxic-Cat/Airport-toolkit/master/ssr_node.service.el8
-	chmod 644 ssr_node.service && mv ssr_node.service /usr/lib/systemd/system
+	chmod 664 ssr_node.service && mv ssr_node.service /usr/lib/systemd/system
 	echo "Starting SSR Node Service..."
-	systemctl enable ssr_node && systemctl start ssr_node
+	systemctl daemon-reload && systemctl enable ssr_node && systemctl start ssr_node
 }
 do_salt_minion(){
 	echo "Installing Salt Minion..."
