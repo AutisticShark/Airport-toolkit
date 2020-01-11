@@ -140,7 +140,7 @@ do_mu(){
 		read mu_regex
 		echo "Writting MU config..."
 	fi
-	sed -i -e %s/MU_SUFFIX = "zhaoj.in"/MU_SUFFIX = "${mu_suffix}"/g% -e %s/MU_REGEX = "%5m%id.%suffix"/MU_REGEX = "${mu_regex}"/g% userapiconfig.py
+	sed -i -e "s/MU_SUFFIX = 'zhaoj.in'/MU_SUFFIX = '${mu_suffix}'/g" -e "s/MU_REGEX = '%5m%id.%suffix'/MU_REGEX = '${mu_regex}'/g" userapiconfig.py
 }
 do_modwebapi(){
 	if [[ ${is_auto} != "y" ]]; then
@@ -155,11 +155,11 @@ do_modwebapi(){
 		do_mu
 	fi
 	echo "Writting connection config..."
-	sed -i -e "s/NODE_ID = 0/NODE_ID = ${node_id}/g" -e &s%WEBAPI_URL = "https://zhaoj.in"%WEBAPI_URL = "${webapi_url}"%g& -e %s/WEBAPI_TOKEN = "glzjin"/WEBAPI_TOKEN = "${webapi_token}"/g% userapiconfig.py
+	sed -i -e "s/NODE_ID = 0/NODE_ID = ${node_id}/g" -e "s%WEBAPI_URL = 'https://zhaoj.in'%WEBAPI_URL = '${webapi_url}'%g" -e "s/WEBAPI_TOKEN = 'glzjin'/WEBAPI_TOKEN = "${webapi_token}"/g" userapiconfig.py
 }
 do_glzjinmod(){
 	if [[ ${is_auto} != "y" ]]; then
-		sed -i -e 's/"modwebapi"/"glzjinmod"/g' userapiconfig.py
+		sed -i -e "s/'modwebapi'/'glzjinmod'/g" userapiconfig.py
 		echo -n "Please enter DB server's IP address:"
 		read db_ip
 		echo -n "DB name:"
@@ -175,7 +175,7 @@ do_glzjinmod(){
 		do_mu
 	fi
 	echo "Writting connection config..."
-	sed -i -e "s/NODE_ID = 0/NODE_ID = ${node_id}/g" -e %s/MYSQL_HOST = "127.0.0.1"/MYSQL_HOST = "${db_ip}"/g% -e %s/MYSQL_USER = "ss"/MYSQL_USER = "${db_user}"/g% -e %s/MYSQL_PASS = "ss"/MYSQL_PASS = "${db_password}"/g% -e %s/MYSQL_DB = "shadowsocks"/MYSQL_DB = "${db_name}"/g% userapiconfig.py
+	sed -i -e "s/NODE_ID = 0/NODE_ID = ${node_id}/g" -e "s/MYSQL_HOST = '127.0.0.1'/MYSQL_HOST = '${db_ip}'/g" -e "s/MYSQL_USER = 'ss'/MYSQL_USER = '${db_user}'/g" -e "s/MYSQL_PASS = 'ss'/MYSQL_PASS = '${db_password}'/g" -e "s/MYSQL_DB = 'shadowsocks'/MYSQL_DB = '${db_name}'/g" userapiconfig.py
 }
 if [[ ${is_auto} != "y" ]]; then
 	#Do the configuration
