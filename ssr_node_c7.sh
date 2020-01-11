@@ -140,7 +140,7 @@ do_mu(){
 		read mu_regex
 		echo "Writting MU config..."
 	fi
-	sed -i -e "s/MU_SUFFIX = 'zhaoj.in'/MU_SUFFIX = '${mu_suffix}'/g" -e "s/MU_REGEX = '%5m%id.%suffix'/MU_REGEX = '${mu_regex}'/g" userapiconfig.py
+	sed -i -e %s/MU_SUFFIX = "zhaoj.in"/MU_SUFFIX = "${mu_suffix}"/g% -e %s/MU_REGEX = "%5m%id.%suffix"/MU_REGEX = "${mu_regex}"/g% userapiconfig.py
 }
 do_modwebapi(){
 	if [[ ${is_auto} != "y" ]]; then
@@ -155,7 +155,7 @@ do_modwebapi(){
 		do_mu
 	fi
 	echo "Writting connection config..."
-	sed -i -e "s/NODE_ID = 0/NODE_ID = ${node_id}/g" -e "s%WEBAPI_URL = 'https://zhaoj.in'%WEBAPI_URL = '${webapi_url}'%g" -e "s/WEBAPI_TOKEN = 'glzjin'/WEBAPI_TOKEN = '${webapi_token}'/g" userapiconfig.py
+	sed -i -e "s/NODE_ID = 0/NODE_ID = ${node_id}/g" -e &s%WEBAPI_URL = "https://zhaoj.in"%WEBAPI_URL = "${webapi_url}"%g& -e %s/WEBAPI_TOKEN = "glzjin"/WEBAPI_TOKEN = "${webapi_token}"/g% userapiconfig.py
 }
 do_glzjinmod(){
 	if [[ ${is_auto} != "y" ]]; then
@@ -175,7 +175,7 @@ do_glzjinmod(){
 		do_mu
 	fi
 	echo "Writting connection config..."
-	sed -i -e "s/NODE_ID = 0/NODE_ID = ${node_id}/g" -e "s/MYSQL_HOST = '127.0.0.1'/MYSQL_HOST = '${db_ip}'/g" -e "s/MYSQL_USER = 'ss'/MYSQL_USER = '${db_user}'/g" -e "s/MYSQL_PASS = 'ss'/MYSQL_PASS = '${db_password}'/g" -e "s/MYSQL_DB = 'shadowsocks'/MYSQL_DB = '${db_name}'/g" userapiconfig.py
+	sed -i -e "s/NODE_ID = 0/NODE_ID = ${node_id}/g" -e %s/MYSQL_HOST = "127.0.0.1"/MYSQL_HOST = "${db_ip}"/g% -e %s/MYSQL_USER = "ss"/MYSQL_USER = "${db_user}"/g% -e %s/MYSQL_PASS = "ss"/MYSQL_PASS = "${db_password}"/g% -e %s/MYSQL_DB = "shadowsocks"/MYSQL_DB = "${db_name}"/g% userapiconfig.py
 }
 if [[ ${is_auto} != "y" ]]; then
 	#Do the configuration
@@ -223,7 +223,7 @@ EOF
 do_service(){
 	echo "Writting system config..."
 	wget --no-check-certificate -O ssr_node.service https://raw.githubusercontent.com/SuicidalCat/Airport-toolkit/master/ssr_node.service.el7
-	chmod 664 ssr_node.service && mv ssr_node.service /usr/lib/systemd/system
+	chmod 664 ssr_node.service && mv ssr_node.service /etc/systemd/system
 	echo "Starting SSR Node Service..."
 	systemctl daemon-reload && systemctl enable ssr_node && systemctl start ssr_node
 }
