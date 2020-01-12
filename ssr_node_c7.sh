@@ -90,21 +90,23 @@ yum clean all && rm -rf /var/cache/yum && yum update -y
 echo "Configurating EPEL release..."
 yum install epel-release -y && yum makecache
 echo "Install necessary package..."
-yum install python-pip git net-tools htop ntp -y
+yum install git net-tools htop ntp -y
 echo "Disabling firewalld..."
 systemctl stop firewalld && systemctl disable firewalld
 echo "Setting system timezone..."
 timedatectl set-timezone Asia/Taipei && systemctl stop ntpd.service && ntpdate us.pool.ntp.org
 echo "Installing libsodium..."
 yum install libsodium -y
+echo "Installing Python3.6..."
+yum install python36 python36-pip -y
+echo "Installing Shadowsocksr server from GitHub..."
 mkdir /soft
-echo "Installing Shadowsocksr server from GitHub..."	
 cd /tmp && git clone -b manyuser https://github.com/Anankke/shadowsocks-mod.git
 mv shadowsocks-mod shadowsocks
 mv -f shadowsocks /soft
 cd /soft/shadowsocks
-pip install --upgrade pip setuptools
-pip install -r requirements.txt
+pip3 install --upgrade pip setuptools
+pip3 install -r requirements.txt
 echo "Generating config file..."
 cp apiconfig.py userapiconfig.py
 cp config.json user-config.json
