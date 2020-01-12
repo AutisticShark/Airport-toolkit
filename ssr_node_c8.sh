@@ -103,7 +103,7 @@ cd /tmp && git clone -b manyuser https://github.com/Anankke/shadowsocks-mod.git
 mv shadowsocks-mod shadowsocks
 mv -f shadowsocks /soft
 cd /soft/shadowsocks
-pip install --upgrade pip setuptools
+pip3 install --upgrade pip setuptools
 pip install -r requirements.txt
 echo "Generating config file..."
 cp apiconfig.py userapiconfig.py
