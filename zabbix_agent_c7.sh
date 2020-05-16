@@ -19,20 +19,16 @@ echo "Zabbix installation script for CentOS 7 x64"
 
 #Configuration
 zabbix_release_40_url = http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-2.el7.noarch.rpm
-zabbix_release_41_url = http://repo.zabbix.com/zabbix/4.1/rhel/7/x86_64/zabbix-release-4.1-1.el7.noarch.rpm
-zabbix_release_42_url = http://repo.zabbix.com/zabbix/4.2/rhel/7/x86_64/zabbix-release-4.2-2.el7.noarch.rpm
-zabbix_release_43_url = http://repo.zabbix.com/zabbix/4.3/rhel/7/x86_64/zabbix-release-4.3-3.el7.noarch.rpm
+zabbix_release_50_url = http://repo.zabbix.com/zabbix/5.0/rhel/7/x86_64/zabbix-release-5.0-1.el7.noarch.rpm
 
 while :; do echo
 	echo -e "Please select Zabbix agent version you want to install:"
 	echo -e "\t1. 4.0"
-	echo -e "\t2. 4.1"
-    echo -e "\t3. 4.2"
-    echo -e "\t4. 4.3"
-	read -p "Please input a number:(Default 1 press Enter) " connection_method
-	[ -z ${connection_method} ] && connection_method=1
-	if [[ ! ${connection_method} =~ ^[1-4]$ ]]; then
-		echo "Bad answer! Please only input number 1~4"
+	echo -e "\t2. 5.0"
+	read -p "Please input a number:(Default 2 press Enter) " zabbix_version
+	[ -z ${zabbix_version} ] && zabbix_version=1
+	if [[ ! ${zabbix_version} =~ ^[1-2]$ ]]; then
+		echo "Bad answer! Please only input number 1~2"
 	else
 		break
 	fi			
@@ -50,29 +46,11 @@ do_edit_zabbix_agent_config(){
 }
 
 do_install_zabbix_agent_40(){
-    do_zabbix_agent_configure
     rpm -ivh $zabbix_release_40_url
     yum install zabbix-agent -y
-    do_edit_zabbix_agent_config
 }
 
-do_install_zabbix_agent_41(){
-    do_zabbix_agent_configure
-    rpm -ivh $zabbix_release_41_url
+do_install_zabbix_agent_50(){
+    rpm -ivh $zabbix_release_50_url
     yum install zabbix-agent -y
-    do_edit_zabbix_agent_config
-}
-
-do_install_zabbix_agent_42(){
-    do_zabbix_agent_configure
-    rpm -ivh $zabbix_release_42_url
-    yum install zabbix-agent -y
-    do_edit_zabbix_agent_config
-}
-
-do_install_zabbix_agent_43(){
-    do_zabbix_agent_configure
-    rpm -ivh $zabbix_release_43_url
-    yum install zabbix-agent -y
-    do_edit_zabbix_agent_config
 }
