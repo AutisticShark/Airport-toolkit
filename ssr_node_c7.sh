@@ -101,7 +101,7 @@ echo "Installing Python3.6..."
 yum install python36 python36-pip -y
 echo "Installing Shadowsocksr server from GitHub..."
 mkdir /soft
-cd /tmp && git clone -b manyuser https://github.com/Anankke/shadowsocks-mod.git
+cd /tmp && git clone -b testing https://github.com/Anankke/shadowsocks-mod.git
 mv shadowsocks-mod shadowsocks
 mv -f shadowsocks /soft
 cd /soft/shadowsocks
@@ -190,7 +190,7 @@ fi
 do_bbr(){
 	echo "Running system optimization and enable BBR..."
 	rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-	rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
+	rpm -Uvh https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm
 	yum remove kernel-headers -y
 	yum --enablerepo=elrepo-kernel install kernel-ml kernel-ml-headers -y
 	grub2-set-default 0
