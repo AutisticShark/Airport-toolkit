@@ -70,7 +70,7 @@ if [[ ${is_auto} != "y" ]]; then
     	exit 0
 	fi
 fi
-echo "Checking if there any exist Shadowsocksr server software..."
+echo "Checking if there any exist Shadowsocksr server installation..."
 if [ -d "/soft/shadowsocks" ]; then
 	while :; do echo
 		echo -n "Detect exist shadowsocks server installation! If you continue this install, all the previous configuration will be lost! Continue?(Y/N)"
