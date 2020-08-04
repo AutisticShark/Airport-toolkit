@@ -70,10 +70,10 @@ if [[ ${is_auto} != "y" ]]; then
     	exit 0
 	fi
 fi
-echo "Checking if there any exist Shadowsocksr server software..."
+echo "Checking if there is any existing shadowsocksr server installation..."
 if [ -d "/soft/shadowsocks" ]; then
 	while :; do echo
-		echo -n "Detect exist shadowsocks server installation! If you continue this install, all the previous configuration will be lost! Continue?(Y/N)"
+		echo -n "Detect exist shadowsocksr server installation! If you continue this install, all the previous configuration will be lost! Continue?(Y/N)"
 		read is_clean_old
 		if [[ ${is_clean_old} != "y" && ${is_clean_old} != "Y" && ${is_clean_old} != "N" && ${is_clean_old} != "n" ]]; then
 			echo -n "Bad answer! Please only input number Y or N"
