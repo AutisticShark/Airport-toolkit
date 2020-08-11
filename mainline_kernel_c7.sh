@@ -13,7 +13,7 @@ cat << "EOF"
 Author: Toxic Cat
 Github: https://github.com/Toxic-Cat/Airport-toolkit                                 
 EOF
-echo "Mainline kernel and related packages maintenance script for CentOS 7 x64"
+echo "BBR configuration (via Mainline Kernel) for CentOS 7 x64"
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 
 do_elrepo(){
