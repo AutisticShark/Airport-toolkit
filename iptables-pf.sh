@@ -35,8 +35,11 @@ install_iptables(){
 	else
 		echo -e "${Info} 检测到未安装 iptables，开始安装..."
 		if [[ ${release}  == "centos" ]]; then
-			yum update
-			yum install -y iptables
+			yum update -y
+			yum install -y iptables iptables-services
+			systemctl stop firewalld.service
+			systemctl disable firewalld.service
+			systemctl enable iptables.service
 		else
 			apt-get update
 			apt-get install -y iptables
