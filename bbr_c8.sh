@@ -11,7 +11,7 @@ echo "BBR configuration (via Mainline Kernel) for CentOS 8 x64"
 do_elrepo(){
     echo "Install and configure the elrepo"
     rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-	yum install -y https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm
+	yum install -y https://www.elrepo.org/elrepo-release-8.el8.elrepo.noarch.rpm
 }
 
 do_kernel(){
