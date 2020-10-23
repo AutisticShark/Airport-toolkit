@@ -2,16 +2,8 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 cat << "EOF"
- ______                               ____              __      
-/\__  _\               __            /\  _`\           /\ \__   
-\/_/\ \/   ___   __  _/\_\    ___    \ \ \/\_\     __  \ \ ,_\  
-   \ \ \  / __`\/\ \/'\/\ \  /'___\   \ \ \/_/_  /'__`\ \ \ \/  
-    \ \ \/\ \L\ \/>  </\ \ \/\ \__/    \ \ \L\ \/\ \L\.\_\ \ \_ 
-     \ \_\ \____//\_/\_\\ \_\ \____\    \ \____/\ \__/.\_\\ \__\
-      \/_/\/___/ \//\/_/ \/_/\/____/     \/___/  \/__/\/_/ \/__/
-                                                                
-Author: Toxic Cat
-Github: https://github.com/Toxic-Cat/Airport-toolkit                                 
+Author: M1Screw
+Github: https://github.com/M1Screw/Airport-toolkit                                
 EOF
 echo "BBR configuration (via Mainline Kernel) for CentOS 7 x64"
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
