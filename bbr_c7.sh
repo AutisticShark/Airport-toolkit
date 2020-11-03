@@ -24,7 +24,6 @@ do_headers(){
     echo "Install mainline kernel-headers and clean the default one"
     yum remove kernel-headers -y
     yum --enablerepo=elrepo-kernel install kernel-ml-headers -y
-    yum group install "Development Tools" -y
 }
 
 do_tools(){
