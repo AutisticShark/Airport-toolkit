@@ -101,7 +101,7 @@ echo "Installing Python3.6..."
 yum install python36 python36-pip -y
 echo "Installing Shadowsocksr server from GitHub..."
 mkdir /soft
-cd /tmp && git clone -b testing https://github.com/Anankke/shadowsocks-mod.git
+cd /tmp && git clone -b testing https://github.com/sspanel-uim/shadowsocks-mod.git
 mv shadowsocks-mod shadowsocks
 mv -f shadowsocks /soft
 cd /soft/shadowsocks
