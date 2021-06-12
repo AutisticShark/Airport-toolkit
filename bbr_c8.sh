@@ -5,7 +5,7 @@ cat << "EOF"
 Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit                                 
 EOF
-echo "BBR configuration (via Mainline or Longterm Kernel) for CentOS 8/CentOS Stream 8 x86_64"
+echo "BBR configuration (via Mainline or Longterm Kernel) for CentOS Stream 8 x86_64"
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 
 do_elrepo(){

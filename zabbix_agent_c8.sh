@@ -5,7 +5,7 @@ cat << "EOF"
 Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit                                
 EOF
-echo "Zabbix agent installation script for CentOS 8 x64"
+echo "Zabbix agent installation script for CentOS Stream 8 x64"
 
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 
