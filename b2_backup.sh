@@ -29,10 +29,10 @@ do_pre_config(){
 do_db_export(){
     if [[ ${compress_method} == "gzip" ]]; then
         db_file_name=$(date +'%d-%m-%Y-%H-%M-%S')-db.tar.gz
-        mysqldump -u $db_user -p $db_password -h $db_host $db_name | tar -cvzf > $db_file_name
+        mysqldump -u $db_user -p$db_password -h $db_host $db_name | gzip -c > $db_file_name
     elif [[ ${compress_method} == "zip" ]]; then
         db_file_name=$(date +'%d-%m-%Y-%H-%M-%S')-db.zip
-        mysqldump -u $db_user -p $db_password -h $db_host $db_name | zip > $db_file_name
+        mysqldump -u $db_user -p$db_password -h $db_host $db_name | zip > $db_file_name
     else
         echo -n "Unknown compress method"
         exit 0
@@ -42,7 +42,7 @@ do_db_export(){
 do_pack_website(){
     if [[ ${compress_method} == "gzip" ]]; then
         website_file_name=$(date +'%d-%m-%Y-%H-%M-%S')-web.tar.gz
-        tar -cvzf $website_file_name $website_dir
+        tar -czf $website_file_name $website_dir
     elif [[ ${compress_method} == "zip" ]]; then
         website_file_name=$(date +'%d-%m-%Y-%H-%M-%S')-web.zip
         zip -r $website_file_name $website_dir
@@ -52,10 +52,10 @@ do_pack_website(){
     fi
 }
 
-do_upload_b2(){ 
+do_upload_b2(){
     b2 authorize-account $b2_app_key_id $b2_app_key
-    b2 upload_file $b2_bucket_name $(pwd) $website_file_name
-    b2 upload_file $b2_bucket_name $(pwd) $db_file_name
+    b2 upload_file $b2_bucket_name $(pwd)/$website_file_name $website_file_name
+    b2 upload_file $b2_bucket_name $(pwd)/$db_file_name $db_file_name
 }
 
 if [[ $1 == "config" ]]; then
