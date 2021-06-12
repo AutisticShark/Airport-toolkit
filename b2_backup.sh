@@ -9,7 +9,7 @@ echo "B2 Cloud Storage Backup script for MySQL/MariaDB + PHP + Nginx website"
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 
 #config
-$b2_app_key_id=""
+b2_app_key_id=""
 b2_app_key=""
 b2_bucket_name=""
 db_name=""

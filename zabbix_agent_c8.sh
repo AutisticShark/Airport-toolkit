@@ -10,9 +10,9 @@ echo "Zabbix agent installation script for CentOS Stream 8 x64"
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 
 #Configuration
-zabbix_release_40_url = http://repo.zabbix.com/zabbix/4.0/rhel/8/x86_64/zabbix-release-4.0-2.el8.noarch.rpm
-zabbix_release_50_url = http://repo.zabbix.com/zabbix/5.0/rhel/8/x86_64/zabbix-release-5.0-1.el8.noarch.rpm
-zabbix_config_file_path = /etc/zabbix/zabbix_agentd.conf
+zabbix_release_40_url="http://repo.zabbix.com/zabbix/4.0/rhel/8/x86_64/zabbix-release-4.0-2.el8.noarch.rpm"
+zabbix_release_50_url="http://repo.zabbix.com/zabbix/5.0/rhel/8/x86_64/zabbix-release-5.0-1.el8.noarch.rpm"
+zabbix_config_file_path="/etc/zabbix/zabbix_agentd.conf"
 
 while :; do echo
 	echo -e "Please select Zabbix agent version you want to install:"
