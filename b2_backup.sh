@@ -36,6 +36,7 @@ do_db_export(){
     else
         echo -n "Unknown compress method"
         exit 0
+    fi
 }
 
 do_pack_website(){
@@ -48,6 +49,7 @@ do_pack_website(){
     else
         echo -n "Unknown compress method"
         exit 0
+    fi
 }
 
 do_upload_b2(){ 
