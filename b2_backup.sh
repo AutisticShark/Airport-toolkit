@@ -9,6 +9,7 @@ echo "B2 Cloud Storage Backup script for MySQL/MariaDB + PHP + Nginx website"
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 
 #config
+backup_name=""
 b2_app_key_id=""
 b2_app_key=""
 b2_bucket_name=""
@@ -28,13 +29,13 @@ do_pre_config(){
 
 do_db_export(){
     if [[ ${compress_method} == "gzip" ]]; then
-        db_file_sql=$(date +'%Y-%m-%d-%H-%M-%S').sql
-        db_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-db.gz
+        db_file_sql=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name.sql
+        db_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-db.gz
         mysqldump -u $db_user -p$db_password -h $db_host $db_name > $db_file_sql
         gzip -c $db_file_sql > $db_file_name
         rm $db_file_sql
     elif [[ ${compress_method} == "zip" ]]; then
-        db_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-db.zip
+        db_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-db.zip
         mysqldump -u $db_user -p$db_password -h $db_host $db_name | zip -qq > $db_file_name
     else
         echo -n "Unknown compress method"
@@ -44,10 +45,10 @@ do_db_export(){
 
 do_pack_website(){
     if [[ ${compress_method} == "gzip" ]]; then
-        website_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-web.tar.gz
+        website_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-web.tar.gz
         tar -czf $website_file_name $website_dir
     elif [[ ${compress_method} == "zip" ]]; then
-        website_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-web.zip
+        website_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-web.zip
         zip -rqq $website_file_name $website_dir
     else
         echo -n "Unknown compress method"
