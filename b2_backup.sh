@@ -24,6 +24,7 @@ do_pre_config(){
     dnf update -y
     dnf install gzip zip tar -y
     pip3 install b2
+    pip3 install importlib-metadata==3.10.1
     ln -s /usr/local/bin/b2 /usr/bin/b2
 }
 
