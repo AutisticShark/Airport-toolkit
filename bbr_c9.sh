@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-cat << "EOF"
+cat << "EOF"                                                                
 Author: M1Screw
-Github: https://github.com/M1Screw/Airport-toolkit                                
+Github: https://github.com/M1Screw/Airport-toolkit                                 
 EOF
-echo "BBR configuration (via Mainline or Longterm Kernel) for CentOS 7 x86_64"
+echo "BBR configuration (via Mainline or Longterm Kernel) for CentOS Stream 9 x86_64"
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 
 do_elrepo(){
     echo "Install and configure the elrepo"
     rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
-	yum install -y https://www.elrepo.org/elrepo-release-7.el7.elrepo.noarch.rpm
+	yum install -y https://www.elrepo.org/elrepo-release-8.el8.elrepo.noarch.rpm
 }
 
 do_kernel(){
@@ -71,7 +71,7 @@ do_status_check(){
     echo "Kernel related rpm packages:"
     rpm -qa | grep kernel
     echo "System booting kernel options:"
-    egrep ^menuentry /etc/grub2.cfg | cut -f 2 -d \'
+    ls -l /boot/vmlinuz-*
 }
 
 do_update_kernel(){
@@ -107,6 +107,7 @@ if [[ $1 == "longterm" ]]; then
     do_kernel_lt
     do_headers_lt
     do_tools_lt
+    do_enable_bbr
     do_reboot
     exit 1
 fi

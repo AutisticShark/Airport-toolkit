@@ -5,19 +5,19 @@ cat << "EOF"
 Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit                                
 EOF
-echo "Zabbix agent installation script for CentOS Stream 8 x64"
+echo "Zabbix agent installation script for CentOS Stream 8 x86_64"
 
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 
 #Configuration
-zabbix_release_40_url="http://repo.zabbix.com/zabbix/4.0/rhel/8/x86_64/zabbix-release-4.0-2.el8.noarch.rpm"
 zabbix_release_50_url="http://repo.zabbix.com/zabbix/5.0/rhel/8/x86_64/zabbix-release-5.0-1.el8.noarch.rpm"
+zabbix_release_60_url="http://repo.zabbix.com/zabbix/6.0/rhel/8/x86_64/zabbix-release-6.0-1.el8.noarch.rpm"
 zabbix_config_file_path="/etc/zabbix/zabbix_agentd.conf"
 
 while :; do echo
 	echo -e "Please select Zabbix agent version you want to install:"
-	echo -e "\t1. 4.0"
-	echo -e "\t2. 5.0"
+	echo -e "\t1. 5.0"
+	echo -e "\t2. 6.0"
 	read -p "Please input a number:(Default 2 press Enter) " zabbix_version
 	[ -z ${zabbix_version} ] && zabbix_version=1
 	if [[ ! ${zabbix_version} =~ ^[1-2]$ ]]; then
@@ -43,12 +43,12 @@ do_enable_and_start_zabbix_agent(){
     systemctl restart zabbix-agent
 }
 
-do_install_zabbix_agent_40(){
+do_install_zabbix_agent_50(){
     rpm -ivh $zabbix_release_40_url
     yum install zabbix-agent -y
 }
 
-do_install_zabbix_agent_50(){
+do_install_zabbix_agent_60(){
     rpm -ivh $zabbix_release_50_url
     yum install zabbix-agent -y
 }
@@ -56,9 +56,9 @@ do_install_zabbix_agent_50(){
 do_zabbix_agent_configure
 
 if [[ ${zabbix_version} == 1 ]]; then
-    do_install_zabbix_agent_40
-elif [[ ${zabbix_version} == 2 ]]; then
     do_install_zabbix_agent_50
+elif [[ ${zabbix_version} == 2 ]]; then
+    do_install_zabbix_agent_60
 fi
 
 do_enable_and_start_zabbix_agent

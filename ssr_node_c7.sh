@@ -5,7 +5,7 @@ cat << "EOF"
 Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit                               
 EOF
-echo "Shadowsocksr server installation script for CentOS 7 x64"
+echo "Shadowsocksr server installation script for CentOS 7 x86_64"
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 ARG_NUM=$#
 TEMP=`getopt -o hvV --long is_auto:,connection_method:,is_mu:,webapi_url:,webapi_token:,db_ip:,db_name:,db_user:,db_password:,node_id:-- "$@" 2>/dev/null`
@@ -16,7 +16,7 @@ while :; do
   case "$1" in
 	--is_auto)
       is_auto=y; shift 1
-      [ -d "/soft/shadowsocks" ] && { echo "Shadowsocksr server software is already exist"; exit 1; }
+      [ -d "/usr/local/shadowsocks" ] && { echo "Shadowsocksr server software is already exist"; exit 1; }
       ;;
     --is_mu)
       is_mu=y; shift 1
@@ -47,14 +47,14 @@ if [[ ${is_auto} != "y" ]]; then
 	fi
 fi
 echo "Checking if there is any existing shadowsocksr server installation..."
-if [ -d "/soft/shadowsocks" ]; then
+if [ -d "/usr/local/shadowsocks" ]; then
 	while :; do echo
 		echo -n "Detect exist shadowsocksr server installation! If you continue this install, all the previous configuration will be lost! Continue?(Y/N)"
 		read is_clean_old
 		if [[ ${is_clean_old} != "y" && ${is_clean_old} != "Y" && ${is_clean_old} != "N" && ${is_clean_old} != "n" ]]; then
 			echo -n "Bad answer! Please only input number Y or N"
 		elif [[ ${is_clean_old} == "y" || ${is_clean_old} == "Y" ]]; then
-			rm -rf /soft
+			rm -rf /usr/local/shadowsocks
 			break
 		else
 			exit 0
@@ -76,11 +76,10 @@ yum install libsodium -y
 echo "Installing Python3.6..."
 yum install python36 python36-pip -y
 echo "Installing Shadowsocksr server from GitHub..."
-mkdir /soft
 cd /tmp && git clone -b manyuser https://github.com/Anankke/shadowsocks-mod.git
 mv shadowsocks-mod shadowsocks
-mv -f shadowsocks /soft
-cd /soft/shadowsocks
+mv -f shadowsocks /usr/local
+cd /usr/local/shadowsocks
 pip3 install --upgrade pip setuptools
 pip3 install -r requirements.txt
 echo "Generating config file..."
