@@ -3,22 +3,13 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 cat << "EOF"
 Author: M1Screw
-Github: https://github.com/M1Screw/Airport-toolkit                               
+Github: https://github.com/M1Screw/Airport-toolkit
+Usage: 
+./b2_backup_c8.sh config --> First time setup for this script
+./b2_backup_c8.sh backup config1 config2 --> Backup your website to B2 Cloud Storage
 EOF
-echo "B2 Cloud Storage Backup script for LNMP running on CentOS Stream 8 x86_64"
+echo "B2 Cloud Storage Backup script for LNMP website running on CentOS Stream 8 x86_64 system"
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
-
-#config
-backup_name=""
-b2_app_key_id=""
-b2_app_key=""
-b2_bucket_name=""
-db_name=""
-db_password=''
-db_user=""
-db_host=""
-website_dir=""
-compress_method="" #gzip or zip
 
 do_pre_config(){
     dnf update -y
@@ -29,7 +20,11 @@ do_pre_config(){
     ln -s /usr/local/bin/b2 /usr/bin/b2
 }
 
-do_db_export(){
+do_reset_config(){
+    unset backup_name b2_app_key_id b2_app_key b2_bucket_name db_name db_password db_user db_host website_dir compress_method
+}
+
+do_pack_db(){
     if [[ ${compress_method} == "gzip" ]]; then
         db_file_sql=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name.sql
         db_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-db.gz
@@ -71,8 +66,19 @@ if [[ $1 == "config" ]]; then
     exit 1
 fi
 if [[ $1 == "backup" ]]; then
-    do_db_export
-    do_pack_website
-    do_upload_b2
+    shift
+    for config_file in $@; do
+        echo -n "Reading config file $config_file"
+        if test -f $config_file ; then
+            . "$config_file"
+            do_pack_db
+            do_pack_website
+            do_upload_b2
+            do_reset_config
+         else
+            echo "Error: $config_file not found!"
+            continue
+        fi
+    done
     exit 1
 fi

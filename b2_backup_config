@@ -1,0 +1,11 @@
+#config
+backup_name=""
+b2_app_key_id=""
+b2_app_key=""
+b2_bucket_name=""
+db_name=""
+db_password=''
+db_user=""
+db_host=""
+website_dir=""
+compress_method="" #gzip or zip
