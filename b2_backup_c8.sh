@@ -68,10 +68,10 @@ fi
 if [[ $1 == "backup" ]]; then
     shift
     for config_file in $@; do
-        echo -n "Reading config file $config_file \n"
+        echo "Reading config file $config_file"
         if test -f $config_file ; then
             . "$config_file"
-            echo -n "Backing up $config_file \n"
+            echo "Backing up $config_file \n"
             do_pack_db
             do_pack_website
             do_upload_b2
