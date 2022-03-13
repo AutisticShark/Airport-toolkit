@@ -3,7 +3,13 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 cat << "EOF"                                                                
 Author: M1Screw
-Github: https://github.com/M1Screw/Airport-toolkit                                 
+Github: https://github.com/M1Screw/Airport-toolkit
+Usage: 
+./bbr_c9.sh mainline --> Install mainline kernel and enable BBR
+./bbr_c9.sh longterm --> Install longterm kernel and enable BBR
+./bbr_c9.sh bbr --> Enable BBR
+./bbr_c9.sh status --> Check BBR and kernel status
+./bbr_c9.sh update --> Update the mainline/longterm kernel                             
 EOF
 echo "BBR configuration (via Mainline or Longterm Kernel) for CentOS Stream 9 x86_64"
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
@@ -109,10 +115,11 @@ if [[ $1 == "longterm" ]]; then
     do_tools_lt
     do_enable_bbr
     do_reboot
-    exit 1
 fi
-do_kernel
-do_headers
-do_tools
-do_enable_bbr
-do_reboot
+if [[ $1 == "mainline" ]]; then
+    do_kernel
+    do_headers
+    do_tools
+    do_enable_bbr
+    do_reboot
+fi

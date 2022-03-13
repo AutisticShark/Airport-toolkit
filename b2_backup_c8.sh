@@ -5,13 +5,13 @@ cat << "EOF"
 Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit
 Usage: 
-./b2_backup_c8.sh config --> First time setup for this script
+./b2_backup_c8.sh init --> First time setup for this script
 ./b2_backup_c8.sh backup config1 config2 --> Backup your website to B2 Cloud Storage
 EOF
 echo "B2 Cloud Storage Backup script for LNMP website running on CentOS Stream 8 x86_64 system"
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 
-do_pre_config(){
+do_init(){
     dnf update -y
     dnf install gzip zip tar -y
     dnf install python3-pip -y
@@ -61,8 +61,8 @@ do_upload_b2(){
     rm $db_file_name
 }
 
-if [[ $1 == "config" ]]; then
-    do_pre_config
+if [[ $1 == "init" ]]; then
+    do_init
     exit 1
 fi
 if [[ $1 == "backup" ]]; then
