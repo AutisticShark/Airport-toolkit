@@ -65,8 +65,11 @@ if [[ $1 == "init" ]]; then
     do_init
     exit 1
 fi
+
 if [[ $1 == "backup" ]]; then
     shift
+    path="$(readlink -f $0)"
+    cd $path
     for config_file in $@; do
         echo "Reading config file $config_file"
         if test -f $config_file ; then
