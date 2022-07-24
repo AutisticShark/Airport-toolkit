@@ -2,13 +2,14 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 cat << "EOF"
+B2 Cloud Storage Backup script for LNMP website running on CentOS Stream 8 x86_64
 Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit
 Usage: 
 ./b2_backup_c8.sh init --> First time setup for this script
 ./b2_backup_c8.sh backup config1 config2 --> Backup your website to B2 Cloud Storage
 EOF
-echo "B2 Cloud Storage Backup script for LNMP website running on CentOS Stream 8 x86_64 system"
+
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 
 do_init(){

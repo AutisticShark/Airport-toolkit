@@ -2,16 +2,16 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 cat << "EOF"
-Zabbix agent installation script for RHEL/CentOS Stream 8 x86_64
+Zabbix agent installation script for RHEL/CentOS Stream 9 x86_64
 Author: M1Screw
-Github: https://github.com/M1Screw/Airport-toolkit                               
+Github: https://github.com/M1Screw/Airport-toolkit                                 
 EOF
 
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 
 #Configuration
-zabbix_release_60_url="https://repo.zabbix.com/zabbix/6.0/rhel/8/x86_64/zabbix-release-6.0-2.el8.noarch.rpm"
-zabbix_release_62_url="https://repo.zabbix.com/zabbix/6.2/rhel/8/x86_64/zabbix-release-6.2-1.el8.noarch.rpm"
+zabbix_release_60_url="https://repo.zabbix.com/zabbix/6.0/rhel/9/x86_64/zabbix-release-6.0-3.el9.noarch.rpm"
+zabbix_release_62_url="https://repo.zabbix.com/zabbix/6.2/rhel/9/x86_64/zabbix-release-6.2-2.el9.noarch.rpm"
 zabbix_config_file_path="/etc/zabbix/zabbix_agentd.conf"
 
 while :; do echo

@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
-cat << "EOF"                                                                
+cat << "EOF"
+BBR configuration script for RHEL/CentOS Stream 8 x86_64                                                                
 Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit
+Usage:
 ./bbr_c8.sh mainline --> Install mainline kernel and enable BBR
 ./bbr_c8.sh longterm --> Install longterm kernel and enable BBR
 ./bbr_c8.sh bbr --> Enable BBR
 ./bbr_c8.sh status --> Check BBR and kernel status
 ./bbr_c8.sh update --> Update the mainline/longterm kernel                                    
 EOF
-echo "BBR configuration (via Mainline or Longterm Kernel) for CentOS Stream 8 x86_64"
+
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
 
 do_elrepo(){

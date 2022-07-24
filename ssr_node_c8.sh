@@ -2,11 +2,13 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 cat << "EOF"
+shadowsocks-mod server installation script for RHEL/CentOS Stream 8 x86_64
 Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit                                 
 EOF
-echo "Shadowsocksr server installation script for CentOS Stream 8 x86_64"
+
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
+
 ARG_NUM=$#
 TEMP=`getopt -o hvV --long is_auto:,connection_method:,is_mu:,webapi_url:,webapi_token:,db_ip:,db_name:,db_user:,db_password:,node_id:-- "$@" 2>/dev/null`
 [ $? != 0 ] && echo "ERROR: unknown argument!" && exit 1
