@@ -1,5 +1,5 @@
 [Unit]
-Description=SSR Node Service for SSPanel-Uim
+Description=shadowsocks-mod Service for SSPanel-UIM
 After=rc-local.service
 
 [Service]
