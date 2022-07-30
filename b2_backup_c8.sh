@@ -37,7 +37,7 @@ do_pack_db(){
         mysqldump -u $db_user -p$db_password -h $db_host $db_name | zip -qq > $db_file_name
     else
         echo -n "Unknown compress method"
-        exit 0
+        exit 1
     fi
 }
 
@@ -50,7 +50,7 @@ do_pack_website(){
         zip -rqq $website_file_name $website_dir
     else
         echo -n "Unknown compress method"
-        exit 0
+        exit 1
     fi
 }
 
@@ -64,7 +64,7 @@ do_upload_b2(){
 
 if [[ $1 == "init" ]]; then
     do_init
-    exit 1
+    exit 0
 fi
 
 if [[ $1 == "backup" ]]; then
@@ -85,5 +85,5 @@ if [[ $1 == "backup" ]]; then
             continue
         fi
     done
-    exit 1
+    exit 0
 fi

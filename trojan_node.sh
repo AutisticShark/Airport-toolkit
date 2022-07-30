@@ -129,13 +129,13 @@ do_update(){
 if [[ $1 == "install" ]]; then
     do_install_trojan_server
     do_install_acme
-    exit 1
+    exit 0
 fi
 if [[ $1 == "config" ]]; then
     do_config
-    exit 1
+    exit 0
 fi
 if [[ $1 == "update" ]]; then
     do_update
-    exit 1
+    exit 0
 fi

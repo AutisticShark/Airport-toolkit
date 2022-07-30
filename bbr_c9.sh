@@ -99,15 +99,15 @@ do_reboot(){
 
 if [[ $1 == "status" ]]; then
     do_status_check
-    exit 1
+    exit 0
 fi
 if [[ $1 == "bbr" ]]; then
     do_enable_bbr
-    exit 1
+    exit 0
 fi
 if [[ $1 == "update" ]]; then
     do_update_kernel
-    exit 1
+    exit 0
 fi
 do_elrepo
 if [[ $1 == "longterm" ]]; then
