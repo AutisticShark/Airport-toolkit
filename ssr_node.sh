@@ -45,7 +45,7 @@ do_install_shadowsocks_server(){
     fi
     echo "Installing dependency && Updating current installed package..."
     dnf update -y
-    dnf install wget libsodium python3 python3-pip -y
+    dnf install wget -y
     echo "Installing DNF repo..."
     if [ $os_release == "fedora" ]
     then
