@@ -1,6 +1,4 @@
-#!/usr/bin/env bash
-PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
-export PATH
+#!/usr/bin/bash
 cat << "EOF"
 BBR configuration script for RHEL/CentOS Stream 9 x86_64                                                           
 Author: M1Screw

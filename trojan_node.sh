@@ -1,14 +1,12 @@
-#!/usr/bin/env bash
-PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
-export PATH
+#!/usr/bin/bash
 cat << "EOF"
-TrojanX server installation script for RHEL/Fedora                                                          
+TrojanX server installation script for RHEL/Fedora
 Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit
-Usage: 
-./trojan_node_c9.sh install --> Install TrojanX server
-./trojan_node_c9.sh config --> Configure TrojanX server
-./trojan_node_c9.sh update --> Update TrojanX server                           
+Usage:
+./trojan_node.sh install --> Install TrojanX server
+./trojan_node.sh config --> Configure TrojanX server
+./trojan_node.sh update --> Update TrojanX server
 EOF
 
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
@@ -49,7 +47,12 @@ do_install_trojan_server(){
     dnf update -y
     dnf install wget -y
     echo "Installing DNF repo..."
-    wget -O /etc/yum.repos.d/sspanel.repo https://mirror.sspanel.org/repo/rhel.repo
+    if [ $os_release == "fedora" ]
+    then
+        wget -O /etc/yum.repos.d/sspanel.repo https://mirror.sspanel.org/repo/fedora.repo
+    else
+        wget -O /etc/yum.repos.d/sspanel.repo https://mirror.sspanel.org/repo/rhel.repo
+    fi
     echo "Installing TrojanX server..."
     dnf install trojan-server -y
     echo "Installing TrojanX server..."
@@ -115,12 +118,18 @@ do_config(){
 	    fi			
     done
     sed -i -e 's/0.0.0.0:443/0.0.0.0:$node_port/g' -e 's/"id": 1/"id": $node_id/g' -e 's/example-key/$mu_key/g' -e 's|https://example.com/mod_mu|$panel_url|g' -e 's/"example.com":/"$domain":/g' -e 's/example.pem/cert.pem/g' -e 's/example.key/cert.key/g' /etc/trojan-server/sspanel.json
-    systemctl restart trojan-server
+    systemctl start trojan-server
     systemctl enable trojan-server
 }
 do_update(){
+    os_release=$(cat /etc/os-release | grep "^ID=" | awk -F '=' '{print $2}')
     echo "Updating SSPanel-UIM RPM Repository..."
-    wget -O /etc/yum.repos.d/sspanel.repo https://mirror.sspanel.org/repo/rhel.repo
+    if [ $os_release == "fedora" ]
+    then
+        wget -O /etc/yum.repos.d/sspanel.repo https://mirror.sspanel.org/repo/fedora.repo
+    else
+        wget -O /etc/yum.repos.d/sspanel.repo https://mirror.sspanel.org/repo/rhel.repo
+    fi
     echo "Updating TrojanX server..."
     dnf update trojan-server -y
     echo "Updating acme.sh..."
