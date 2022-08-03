@@ -14,7 +14,7 @@ EOF
 do_install_trojan_server(){
     echo "Detecting CPU Architecture..."
     cpu_arch=$(uname -m)
-    if [[ $cpu_arch != "x86_64" || $cpu_arch != "aarch64" ]]
+    if [[ $cpu_arch != "x86_64" && $cpu_arch != "aarch64" ]]
     then
         echo "Error: Unsupported CPU Architecture!"
         exit 1
@@ -22,14 +22,14 @@ do_install_trojan_server(){
     echo "Detecting OS..."
     os_release=$(cat /etc/os-release | grep "^ID=" | awk -F '=' '{print $2}')
     os_version=$(cat /etc/os-release | grep "^VERSION_ID=" | awk -F '=' '{print $2}')
-    if [[ $os_release != "rhel" || $os_release != "centos" || $os_release != "rocky" || $os_release != "fedora" ]]
+    if [[ $os_release != "rhel" && $os_release != "centos" && $os_release != "rocky" && $os_release != "fedora" ]]
     then
         echo "Error: Unsupported OS!"
         exit 1
     fi
     if [[ $os_release == "rhel" || $os_release != "centos" || $os_release != "rocky" ]]
     then
-        if [[ $os_version != "8"* ||  $os_version != "9"* ]]
+        if [[ $os_version != "8"* &&  $os_version != "9"* ]]
         then
             echo "Error: Unsupported OS version!"
             exit 1
@@ -37,7 +37,7 @@ do_install_trojan_server(){
     fi
     if [ $os_release == "fedora" ]
     then
-        if [[ $os_version != "34" || $os_version != "35" || $os_version != "36" ]]
+        if [[ $os_version != "34" && $os_version != "35" && $os_version != "36" ]]
         then
             echo "Error: Unsupported OS version!"
             exit 1
