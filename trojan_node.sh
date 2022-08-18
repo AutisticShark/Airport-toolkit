@@ -55,11 +55,10 @@ do_install_trojan_server(){
     fi
     echo "Installing TrojanX server..."
     dnf install trojan-server -y
-    echo "Installing TrojanX server..."
 }
 do_install_acme(){
     read -p "Please input your email: " email
-    echo "Installing acme..."
+    echo "Installing acme.sh..."
     wget -O -  https://get.acme.sh | sh -s email=$email
 }
 do_config(){

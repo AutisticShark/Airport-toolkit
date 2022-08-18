@@ -55,7 +55,6 @@ do_install_shadowsocks_server(){
     fi
     echo "Installing shadowsocks-mod server..."
     dnf install shadowsocks-server -y
-    echo "Installing shadowsocks-mod server..."
 }
 do_config(){
     read -p "Please input your node id: " node_id
