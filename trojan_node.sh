@@ -90,28 +90,28 @@ do_config(){
                 read -p "Please input your Cloudflare key: " cf_key
                 read -p "Please input your Cloudflare email: " cf_email
                 CF_Key=$cf_key CF_Email=$cf_email acme.sh --issue --dns dns_cf -d $domain
-                acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
+                bash ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
                 break
             elif [[ ${cert_mode} == 3 ]]; then
                 read -p "Please input your domain name: " domain
                 read -p "Please input your Amazon Route53 access key id: " route53_key_id
                 read -p "Please input your Amazon Route53 access key: " route53_key
                 AWS_ACCESS_KEY_ID=$route53_key_id AWS_SECRET_ACCESS_KEY=$route53_key acme.sh --issue --dns dns_aws -d $domain
-                acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
+                bash ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
                 break
             elif [[ ${cert_mode} == 4 ]]; then
                 read -p "Please input your domain name: " domain
                 read -p "Please input your DNSPod id: " dnspod_id
                 read -p "Please input your DNSPod key: " dnspod_key
                 DP_Id=$dnspod_id DP_Key=$dnspod_key acme.sh --issue --dns dns_dp -d $domain
-                acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
+                bash ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
                 break
             elif [[ ${cert_mode} == 5 ]]; then
                 read -p "Please input your domain name: " domain
                 read -p "Please input your Aliyun key: " aliyun_key
                 read -p "Please input your Aliyun secret: " aliyun_secret
                 Ali_Key=$aliyun_key Ali_Secret=$aliyun_secret acme.sh --issue --dns dns_ali -d $domain
-                acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
+                bash ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
                 break
             fi
 	    fi			
