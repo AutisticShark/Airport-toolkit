@@ -20,8 +20,8 @@ do_install_trojan_server(){
         exit 1
     fi
     echo "Detecting OS..."
-    os_release=$(cat /etc/os-release | grep "^ID=" | awk -F '=' '{print $2}')
-    os_version=$(cat /etc/os-release | grep "^VERSION_ID=" | awk -F '=' '{print $2}')
+    os_release=$(cat /etc/os-release | grep "^ID=" | awk -F '=' '{print $2}' | tr -d '"')
+    os_version=$(cat /etc/os-release | grep "^VERSION_ID=" | awk -F '=' '{print $2}' | tr -d '"')
     if [[ $os_release != "rhel" && $os_release != "centos" && $os_release != "rocky" && $os_release != "fedora" ]]
     then
         echo "Error: Unsupported OS!"
