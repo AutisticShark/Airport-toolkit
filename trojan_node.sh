@@ -60,7 +60,7 @@ do_install_trojan_server(){
 do_install_acme(){
     read -p "Please input your email: " email
     echo "Installing acme..."
-    wget -O -  https://get.acme.sh | sh -s $email
+    wget -O -  https://get.acme.sh | sh -s email=$email
 }
 do_config(){
     read -p "Please input your node port(443): " node_port
