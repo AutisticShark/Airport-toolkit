@@ -1,5 +1,5 @@
 # Airport-toolkit
-各類方便機場主進行安裝維護的 Shell Script
+各類方便機場主進行安裝維護的 Shell Script。
 
 所有 Script 除非特別説明，均需要 root 權限才能運行。    
 末尾的 c8 代表該 Script 是針對 CentOS Stream/RHEL 8 編寫，c9 代表 CentOS Stream/RHEL 9，不帶則適用於 CentOS Stream/RHEL 8 以及 Fedora 34 以上的 OS。    
