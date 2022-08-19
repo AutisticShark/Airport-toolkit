@@ -7,6 +7,7 @@ Usage:
 ./ssr_node.sh install --> Install shadowsocks-mod server
 ./ssr_node.sh config --> Configure shadowsocks-mod server
 ./ssr_node.sh update --> Update shadowsocks-mod server
+./ssr_node.sh uninstall --> Uninstall shadowsocks-mod server
 EOF
 
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
@@ -63,9 +64,17 @@ do_config(){
     read -p "Please input your mu suffix(zhaoj.in): " mu_suffix
     read -p "Please input your mu regex(%5m%id.%suffix): " mu_regex
     cp /opt/shadowsocks-server/apiconfig.py /opt/shadowsocks-server/userapiconfig.py
-    sed -i -e 's/NODE_ID = 0/NODE_ID = $node_id/g' -e 's/example-key/$mu_key/g' -e 's|https://example.com|$panel_url|g' -e 's/zhaoj.in/$mu_suffix/g' -e 's/%5m%id.%suffix/$mu_regex/g' /opt/shadowsocks-server/userapiconfig.py
+    sed -i -e 's/NODE_ID = 0/NODE_ID = ${node_id}/g' -e 's/example-key/${mu_key}/g' -e 's|https://example.com|${panel_url}|g' -e 's/zhaoj.in/${mu_suffix}/g' -e 's/%5m%id.%suffix/${mu_regex}/g' /opt/shadowsocks-server/userapiconfig.py
     systemctl start shadowsocks-server
     systemctl enable shadowsocks-server
+}
+do_uninstall_shadowsocks_server(){
+    systemctl stop shadowsocks-server
+    systemctl disable shadowsocks-server
+    dnf remove shadowsocks-server -y
+    dnf clean all
+    rm -rf /etc/yum.repos.d/sspanel.repo
+    rm -rf /opt/shadowsocks-server
 }
 do_update(){
     os_release=$(cat /etc/os-release | grep "^ID=" | awk -F '=' '{print $2}')
@@ -81,6 +90,10 @@ do_update(){
 }
 if [[ $1 == "install" ]]; then
     do_install_shadowsocks_server
+    exit 0
+fi
+if [[ $1 == "uninstall" ]]; then
+    do_uninstall_shadowsocks_server
     exit 0
 fi
 if [[ $1 == "config" ]]; then

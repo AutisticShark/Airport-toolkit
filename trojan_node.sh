@@ -7,6 +7,7 @@ Usage:
 ./trojan_node.sh install --> Install TrojanX server
 ./trojan_node.sh config --> Configure TrojanX server
 ./trojan_node.sh update --> Update TrojanX server
+./trojan_node.sh uninstall --> Uninstall TrojanX server
 EOF
 
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
@@ -116,9 +117,20 @@ do_config(){
             fi
 	    fi			
     done
-    sed -i -e 's/0.0.0.0:443/0.0.0.0:$node_port/g' -e 's/"id": 1/"id": $node_id/g' -e 's/example-key/$mu_key/g' -e 's|https://example.com/mod_mu|$panel_url|g' -e 's/"example.com":/"$domain":/g' -e 's/example.pem/cert.pem/g' -e 's/example.key/cert.key/g' /etc/trojan-server/sspanel.json
+    sed -i -e 's/0.0.0.0:443/0.0.0.0:${node_port}/g' -e 's/"id": 1/"id": ${node_id}/g' -e 's/example-key/{$mu_key}/g' -e 's|https://example.com/mod_mu|${panel_url}|g' -e 's/"example.com":/"${domain}":/g' -e 's/example.pem/cert.pem/g' -e 's/example.key/cert.key/g' /etc/trojan-server/sspanel.json
     systemctl start trojan-server
     systemctl enable trojan-server
+}
+do_uninstall_trojan_server(){
+    systemctl stop trojan-server
+    systemctl disable trojan-server
+    dnf remove trojan-server -y
+    dnf clean all
+    rm -rf /etc/trojan-server
+    rm -rf /etc/yum.repos.d/sspanel.repo
+}
+do_uninstall_acme(){
+    ~/.acme.sh/acme.sh --uninstall
 }
 do_update(){
     os_release=$(cat /etc/os-release | grep "^ID=" | awk -F '=' '{print $2}')
@@ -137,6 +149,11 @@ do_update(){
 if [[ $1 == "install" ]]; then
     do_install_trojan_server
     do_install_acme
+    exit 0
+fi
+if [[ $1 == "uninstall" ]]; then
+    do_uninstall_trojan_server
+    do_uninstall_acme
     exit 0
 fi
 if [[ $1 == "config" ]]; then
