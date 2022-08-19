@@ -89,29 +89,29 @@ do_config(){
                 read -p "Please input your domain name: " domain
                 read -p "Please input your Cloudflare key: " cf_key
                 read -p "Please input your Cloudflare email: " cf_email
-                CF_Key=$cf_key CF_Email=$cf_email acme.sh --issue --dns dns_cf -d $domain
-                bash ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
+                CF_Key=$cf_key CF_Email=$cf_email ~/.acme.sh/acme.sh --issue --dns dns_cf -d $domain
+                ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
                 break
             elif [[ ${cert_mode} == 3 ]]; then
                 read -p "Please input your domain name: " domain
                 read -p "Please input your Amazon Route53 access key id: " route53_key_id
                 read -p "Please input your Amazon Route53 access key: " route53_key
-                AWS_ACCESS_KEY_ID=$route53_key_id AWS_SECRET_ACCESS_KEY=$route53_key acme.sh --issue --dns dns_aws -d $domain
-                bash ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
+                AWS_ACCESS_KEY_ID=$route53_key_id AWS_SECRET_ACCESS_KEY=$route53_key ~/.acme.sh/acme.sh --issue --dns dns_aws -d $domain
+                ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
                 break
             elif [[ ${cert_mode} == 4 ]]; then
                 read -p "Please input your domain name: " domain
                 read -p "Please input your DNSPod id: " dnspod_id
                 read -p "Please input your DNSPod key: " dnspod_key
-                DP_Id=$dnspod_id DP_Key=$dnspod_key acme.sh --issue --dns dns_dp -d $domain
-                bash ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
+                DP_Id=$dnspod_id DP_Key=$dnspod_key bash ~/.acme.sh/acme.sh --issue --dns dns_dp -d $domain
+                ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
                 break
             elif [[ ${cert_mode} == 5 ]]; then
                 read -p "Please input your domain name: " domain
                 read -p "Please input your Aliyun key: " aliyun_key
                 read -p "Please input your Aliyun secret: " aliyun_secret
-                Ali_Key=$aliyun_key Ali_Secret=$aliyun_secret acme.sh --issue --dns dns_ali -d $domain
-                bash ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
+                Ali_Key=$aliyun_key Ali_Secret=$aliyun_secret ~/.acme.sh/acme.sh --issue --dns dns_ali -d $domain
+                ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
                 break
             fi
 	    fi			
@@ -132,7 +132,7 @@ do_update(){
     echo "Updating TrojanX server..."
     dnf update trojan-server -y
     echo "Updating acme.sh..."
-    acme.sh --upgrade
+    ~/.acme.sh/acme.sh --upgrade
 }
 if [[ $1 == "install" ]]; then
     do_install_trojan_server
