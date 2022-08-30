@@ -92,6 +92,8 @@ do_config(){
                 read -p "Please input your Cloudflare email: " cf_email
                 CF_Key=$cf_key CF_Email=$cf_email ~/.acme.sh/acme.sh --issue --dns dns_cf -d $domain
                 ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
+                ~/.acme.sh/acme.sh --to-pkcs8 -d $domain
+                cat /root/.acme.sh/$domain/$domain.pkcs8 > /etc/trojan-server/cert.key
                 break
             elif [[ ${cert_mode} == 3 ]]; then
                 read -p "Please input your domain name: " domain
@@ -99,6 +101,8 @@ do_config(){
                 read -p "Please input your Amazon Route53 access key: " route53_key
                 AWS_ACCESS_KEY_ID=$route53_key_id AWS_SECRET_ACCESS_KEY=$route53_key ~/.acme.sh/acme.sh --issue --dns dns_aws -d $domain
                 ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
+                ~/.acme.sh/acme.sh --to-pkcs8 -d $domain
+                cat /root/.acme.sh/$domain/$domain.pkcs8 > /etc/trojan-server/cert.key
                 break
             elif [[ ${cert_mode} == 4 ]]; then
                 read -p "Please input your domain name: " domain
@@ -106,6 +110,8 @@ do_config(){
                 read -p "Please input your DNSPod key: " dnspod_key
                 DP_Id=$dnspod_id DP_Key=$dnspod_key bash ~/.acme.sh/acme.sh --issue --dns dns_dp -d $domain
                 ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
+                ~/.acme.sh/acme.sh --to-pkcs8 -d $domain
+                cat /root/.acme.sh/$domain/$domain.pkcs8 > /etc/trojan-server/cert.key
                 break
             elif [[ ${cert_mode} == 5 ]]; then
                 read -p "Please input your domain name: " domain
@@ -113,11 +119,20 @@ do_config(){
                 read -p "Please input your Aliyun secret: " aliyun_secret
                 Ali_Key=$aliyun_key Ali_Secret=$aliyun_secret ~/.acme.sh/acme.sh --issue --dns dns_ali -d $domain
                 ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
+                ~/.acme.sh/acme.sh --to-pkcs8 -d $domain
+                cat /root/.acme.sh/$domain/$domain.pkcs8 > /etc/trojan-server/cert.key
                 break
             fi
 	    fi			
     done
-    sed -i -e 's/0.0.0.0:443/0.0.0.0:${node_port}/g' -e 's/"id": 1/"id": ${node_id}/g' -e 's/example-key/{$mu_key}/g' -e 's|https://example.com/mod_mu|${panel_url}|g' -e 's/"example.com":/"${domain}":/g' -e 's/example.pem/cert.pem/g' -e 's/example.key/cert.key/g' /etc/trojan-server/sspanel.json
+    sed -i -e 's/0.0.0.0:443/0.0.0.0:$node_port/g' \
+    -e 's/"id": 1/"id": $node_id/g' \
+    -e 's/example-key/$mu_key/g' \
+    -e 's|https://example.com/mod_mu|$panel_url|g' \
+    -e 's/"example.com":/"$domain":/g' \
+    -e 's/example.pem/cert.pem/g' \
+    -e 's/example.key/cert.key/g' \
+    /etc/trojan-server/sspanel.json
     systemctl start trojan-server
     systemctl enable trojan-server
 }
