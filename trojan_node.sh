@@ -125,13 +125,13 @@ do_config(){
             fi
 	    fi			
     done
-    sed -i -e 's/0.0.0.0:443/0.0.0.0:$node_port/g' \
-    -e 's/"id": 1/"id": $node_id/g' \
-    -e 's/example-key/$mu_key/g' \
-    -e 's|https://example.com/mod_mu|$panel_url|g' \
-    -e 's/"example.com":/"$domain":/g' \
-    -e 's/example.pem/cert.pem/g' \
-    -e 's/example.key/cert.key/g' \
+    sed -i -e "s/0.0.0.0:443/0.0.0.0:$node_port/g" \
+    -e 's/"id": 1/"id": '"$node_id"'/g' \
+    -e "s/example-key/$mu_key/g" \
+    -e "s|https://example.com/mod_mu|$panel_url|g" \
+    -e 's/"example.com":/"'"$domain"'":/g' \
+    -e "s/example.pem/cert.pem/g" \
+    -e "s/example.key/cert.key/g" \
     /etc/trojan-server/sspanel.json
     systemctl start trojan-server
     systemctl enable trojan-server

@@ -64,11 +64,11 @@ do_config(){
     read -p "Please input your mu suffix(zhaoj.in): " mu_suffix
     read -p "Please input your mu regex(%5m%id.%suffix): " mu_regex
     cp /opt/shadowsocks-server/apiconfig.py /opt/shadowsocks-server/userapiconfig.py
-    sed -i -e 's/NODE_ID = 0/NODE_ID = $node_id/g' \
-    -e 's/example-key/$mu_key/g' \
-    -e 's|https://example.com|$panel_url|g' \
-    -e 's/zhaoj.in/$mu_suffix/g' \
-    -e 's/%5m%id.%suffix/$mu_regex/g' \
+    sed -i -e "s/NODE_ID = 0/NODE_ID = $node_id/g" \
+    -e "s/example-key/$mu_key/g" \
+    -e "s|https://example.com|$panel_url|g" \
+    -e "s/zhaoj.in/$mu_suffix/g" \
+    -e "s/%5m%id.%suffix/$mu_regex/g" \
     /opt/shadowsocks-server/userapiconfig.py
     systemctl start shadowsocks-server
     systemctl enable shadowsocks-server
