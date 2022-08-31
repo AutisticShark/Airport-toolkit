@@ -27,14 +27,16 @@ do_reset_config(){
 
 do_pack_db(){
     if [[ ${compress_method} == "gzip" ]]; then
-        db_file_sql=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name.sql
+        db_file_sql="$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name.sql"
         db_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-db.gz
         mysqldump -u $db_user -p$db_password -h $db_host $db_name > $db_file_sql
         gzip -c $db_file_sql > $db_file_name
         rm $db_file_sql
     elif [[ ${compress_method} == "zip" ]]; then
-        db_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-db.zip
-        mysqldump -u $db_user -p$db_password -h $db_host $db_name | zip -qq > $db_file_name
+        db_file_sql="$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name.sql"
+        db_file_name="$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-db.zip"
+        mysqldump -u $db_user -p$db_password -h $db_host $db_name > $db_file_sql
+        zip -r $db_file_name $db_file_sql
     else
         echo -n "Unknown compress method"
         exit 1
