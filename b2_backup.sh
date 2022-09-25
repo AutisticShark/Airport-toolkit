@@ -2,7 +2,7 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 cat << "EOF"
-B2 Cloud Storage Backup script for LNMP website running on CentOS Stream 8 x86_64
+B2 Cloud Storage Backup script for RHEL 8+
 Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit
 Usage: 
@@ -17,8 +17,6 @@ do_init(){
     dnf install gzip zip tar -y
     dnf install python3-pip -y
     pip3 install b2
-    pip3 install importlib-metadata==3.10.1
-    ln -s /usr/local/bin/b2 /usr/bin/b2
 }
 
 do_reset_config(){
