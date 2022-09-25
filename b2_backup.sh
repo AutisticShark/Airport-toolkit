@@ -6,8 +6,8 @@ B2 Cloud Storage Backup script for RHEL 8+
 Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit
 Usage: 
-./b2_backup_c8.sh init --> First time setup for this script
-./b2_backup_c8.sh backup config1 config2 --> Backup your website to B2 Cloud Storage
+./b2_backup.sh init --> First time setup for this script
+./b2_backup.sh backup config1 config2 --> Backup your website to B2 Cloud Storage
 EOF
 
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
