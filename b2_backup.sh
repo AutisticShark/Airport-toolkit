@@ -7,7 +7,7 @@ Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit
 Usage: 
 ./b2_backup.sh init --> First time setup for this script
-./b2_backup.sh backup config1 config2 --> Backup your website to B2 Cloud Storage
+./b2_backup.sh backup config1 config2 --> Backup your websites & databases to B2 Cloud Storage
 EOF
 
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
@@ -26,7 +26,7 @@ do_reset_config(){
 do_pack_db(){
     if [[ ${compress_method} == "gzip" ]]; then
         db_file_sql="$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name.sql"
-        db_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-db.gz
+        db_file_name="$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-db.gz"
         mysqldump -u $db_user -p$db_password -h $db_host $db_name > $db_file_sql
         gzip -c $db_file_sql > $db_file_name
         rm $db_file_sql
@@ -35,6 +35,7 @@ do_pack_db(){
         db_file_name="$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-db.zip"
         mysqldump -u $db_user -p$db_password -h $db_host $db_name > $db_file_sql
         zip -r $db_file_name $db_file_sql
+        rm $db_file_sql
     else
         echo -n "Unknown compress method"
         exit 1
