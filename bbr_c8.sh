@@ -66,16 +66,22 @@ do_enable_bbr(){
 }
 
 do_status_check(){
-    echo "Current running kernel:"
+    echo "Current running kernel:\n"
     uname -r
-    echo "BBR module status:"
+    echo "===================================="
+    echo "BBR module status:\n"
     lsmod | grep bbr
-    echo "BBR system configuration status:"
+    echo "===================================="
+    echo "Available IPv4 Congestion Control:\n"
     sysctl net.ipv4.tcp_available_congestion_control
+    echo "===================================="
+    echo "Active IPv4 Congestion Control:\n"
     sysctl net.ipv4.tcp_congestion_control
-    echo "Kernel related rpm packages:"
+    echo "===================================="
+    echo "Installed kernel packages:\n"
     rpm -qa | grep kernel
-    echo "System booting kernel options:"
+    echo "===================================="
+    echo "System booting kernel options:\n"
     ls -l /boot/vmlinuz-*
 }
 
