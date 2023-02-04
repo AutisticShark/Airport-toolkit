@@ -7,7 +7,7 @@ Author: M1Screw
 Github: https://github.com/M1Screw/Airport-toolkit
 Usage: 
 ./b2_backup.sh init --> First time setup for this script
-./b2_backup.sh backup config1 config2 --> Backup your websites & databases to B2 Cloud Storage
+./b2_backup.sh backup config1 config2 --> Backup your website & database to B2 Cloud Storage
 EOF
 
 [ $(id -u) != "0" ] && { echo "Error: You must be root to run this script!"; exit 1; }
