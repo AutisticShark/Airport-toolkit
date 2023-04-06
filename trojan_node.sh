@@ -93,7 +93,7 @@ do_config(){
                 CF_Key=$cf_key CF_Email=$cf_email ~/.acme.sh/acme.sh --issue --dns dns_cf -d $domain
                 ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
                 ~/.acme.sh/acme.sh --to-pkcs8 -d $domain
-                cat /root/.acme.sh/$domain/$domain.pkcs8 > /etc/trojan-server/cert.key
+                cat /root/.acme.sh/${domain}_ecc/$domain.pkcs8 > /etc/trojan-server/cert.key
                 break
             elif [[ ${cert_mode} == 3 ]]; then
                 read -p "Please input your domain name: " domain
@@ -102,7 +102,7 @@ do_config(){
                 AWS_ACCESS_KEY_ID=$route53_key_id AWS_SECRET_ACCESS_KEY=$route53_key ~/.acme.sh/acme.sh --issue --dns dns_aws -d $domain
                 ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
                 ~/.acme.sh/acme.sh --to-pkcs8 -d $domain
-                cat /root/.acme.sh/$domain/$domain.pkcs8 > /etc/trojan-server/cert.key
+                cat /root/.acme.sh/${domain}_ecc/$domain.pkcs8 > /etc/trojan-server/cert.key
                 break
             elif [[ ${cert_mode} == 4 ]]; then
                 read -p "Please input your domain name: " domain
@@ -111,7 +111,7 @@ do_config(){
                 DP_Id=$dnspod_id DP_Key=$dnspod_key bash ~/.acme.sh/acme.sh --issue --dns dns_dp -d $domain
                 ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
                 ~/.acme.sh/acme.sh --to-pkcs8 -d $domain
-                cat /root/.acme.sh/$domain/$domain.pkcs8 > /etc/trojan-server/cert.key
+                cat /root/.acme.sh/${domain}_ecc/$domain.pkcs8 > /etc/trojan-server/cert.key
                 break
             elif [[ ${cert_mode} == 5 ]]; then
                 read -p "Please input your domain name: " domain
@@ -120,7 +120,7 @@ do_config(){
                 Ali_Key=$aliyun_key Ali_Secret=$aliyun_secret ~/.acme.sh/acme.sh --issue --dns dns_ali -d $domain
                 ~/.acme.sh/acme.sh --install-cert -d $domain --key-file /etc/trojan-server/cert.key --fullchain-file /etc/trojan-server/cert.pem
                 ~/.acme.sh/acme.sh --to-pkcs8 -d $domain
-                cat /root/.acme.sh/$domain/$domain.pkcs8 > /etc/trojan-server/cert.key
+                cat /root/.acme.sh/${domain}_ecc/$domain.pkcs8 > /etc/trojan-server/cert.key
                 break
             fi
 	    fi			
