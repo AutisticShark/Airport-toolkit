@@ -114,11 +114,11 @@ do_pack_website(){
 }
 
 do_upload_b2(){
-    b2 authorize-account $b2_app_key_id $b2_app_key
-    b2 upload_file $b2_bucket_name $(pwd)/$website_file_name $website_file_name
-    b2 upload_file $b2_bucket_name $(pwd)/$website_file_hash $website_file_hash
-    b2 upload_file $b2_bucket_name $(pwd)/$db_file_name $db_file_name
-    b2 upload_file $b2_bucket_name $(pwd)/$db_file_hash $db_file_hash
+    b2 account authorize $b2_app_key_id $b2_app_key
+    b2 file upload $b2_bucket_name $(pwd)/$website_file_name $website_file_name
+    b2 file upload $b2_bucket_name $(pwd)/$website_file_hash $website_file_hash
+    b2 file upload $b2_bucket_name $(pwd)/$db_file_name $db_file_name
+    b2 file upload $b2_bucket_name $(pwd)/$db_file_hash $db_file_hash
     rm $website_file_name
     rm $website_file_hash
     rm $db_file_name
