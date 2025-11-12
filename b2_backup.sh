@@ -48,20 +48,20 @@ do_init(){
         apt install python3-pip -y
     fi
 
-    pip3 install b2
+    pip3 install b2 --break-system-packages
 
     if [[ ${arch} == "x64" ]]; then
         mkdir 7z
-        wget https://www.7-zip.org/a/7z2407-linux-x64.tar.xz
-        tar -xf 7z2407-linux-x64.tar.xz -C 7z
+        wget https://www.7-zip.org/a/7z2501-linux-x64.tar.xz
+        tar -xf 7z2501-linux-x64.tar.xz -C 7z
         mv -f 7z/7zzs /usr/bin/7z
-        rm -r 7z2407-linux-x64.tar.xz 7z
+        rm -r 7z2501-linux-x64.tar.xz 7z
     elif [[ ${arch} == "arm64" ]]; then
         mkdir 7z
-        wget https://www.7-zip.org/a/7z2407-linux-arm64.tar.xz
-        tar -xf 7z2407-linux-arm64.tar.xz -C 7z
+        wget https://www.7-zip.org/a/7z2501-linux-arm64.tar.xz
+        tar -xf 7z2501-linux-arm64.tar.xz -C 7z
         mv -f 7z/7zzs /usr/bin/7z
-        rm -r 7z2407-linux-arm64.tar.xz 7z
+        rm -r 7z2501-linux-arm64.tar.xz 7z
     fi
 }
 
@@ -114,11 +114,11 @@ do_pack_website(){
 }
 
 do_upload_b2(){
-    b2 authorize-account $b2_app_key_id $b2_app_key
-    b2 upload_file $b2_bucket_name $(pwd)/$website_file_name $website_file_name
-    b2 upload_file $b2_bucket_name $(pwd)/$website_file_hash $website_file_hash
-    b2 upload_file $b2_bucket_name $(pwd)/$db_file_name $db_file_name
-    b2 upload_file $b2_bucket_name $(pwd)/$db_file_hash $db_file_hash
+    b2 account authorize $b2_app_key_id $b2_app_key
+    b2 file upload $b2_bucket_name $(pwd)/$website_file_name $website_file_name
+    b2 file upload $b2_bucket_name $(pwd)/$website_file_hash $website_file_hash
+    b2 file upload $b2_bucket_name $(pwd)/$db_file_name $db_file_name
+    b2 file upload $b2_bucket_name $(pwd)/$db_file_hash $db_file_hash
     rm $website_file_name
     rm $website_file_hash
     rm $db_file_name
