@@ -24,6 +24,27 @@ def extract_cdn_ips(cdn_type, output_txt_path):
             # Extract IPv4 prefixes
             if 'prefixes' in data:
                 for prefix in data['prefixes']:
+                    if prefix.get('service') == 'CLOUDFRONT':
+                        ip_prefixes.append(prefix['ip_prefix'])
+
+            # Extract IPv6 prefixes
+            if 'ipv6_prefixes' in data:
+                for prefix in data['ipv6_prefixes']:
+                    if prefix.get('service') == 'CLOUDFRONT':
+                        ip_prefixes.append(prefix['ipv6_prefix'])
+
+        elif cdn_type == 'cloudfront-origin-shield':
+            json_url = 'https://ip-ranges.amazonaws.com/ip-ranges.json'
+
+            print(f"Downloading IP ranges from {json_url}")
+            response = requests.get(json_url)
+            response.raise_for_status()  # Raise an HTTPError for bad responses (4xx or 5xx)
+            data = response.json()
+            
+            ip_prefixes = []
+            # Extract IPv4 prefixes
+            if 'prefixes' in data:
+                for prefix in data['prefixes']:
                     if prefix.get('service') == 'CLOUDFRONT_ORIGIN_FACING':
                         ip_prefixes.append(prefix['ip_prefix'])
 
@@ -49,7 +70,7 @@ def extract_cdn_ips(cdn_type, output_txt_path):
 
             ip_prefixes = ipv4_prefixes + ipv6_prefixes
         else:
-            print(f"Error: Unknown CDN type '{cdn_type}'. Supported types are 'cloudfront' and 'cloudflare'.")
+            print(f"Error: Unknown CDN type '{cdn_type}'. Supported types are 'cloudfront', 'cloudfront-origin-shield' and 'cloudflare'.")
             return
 
     except requests.exceptions.RequestException as e:
