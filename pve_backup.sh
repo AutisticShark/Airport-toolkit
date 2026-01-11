@@ -13,20 +13,21 @@ EOF
 # Config
 b2_app_key_id=""
 b2_app_key=""
+# Use b2://your-bucket-name/ as bucket name
 b2_bucket_name=""
 
 do_init(){
     apt update -y
     apt install python3-pip -y
-    pip3 install b2
+    pip3 install b2 --break-system-packages
 }
 
 do_upgrade(){
-    pip3 install --upgrade b2
+    pip3 install --upgrade b2 --break-system-packages
 }
 
 do_upload_b2(){
-    b2 authorize-account $b2_app_key_id $b2_app_key
+    b2 account authorize $b2_app_key_id $b2_app_key
     b2 sync --delete /var/lib/vz/dump/* $b2_bucket_name
 }
 
