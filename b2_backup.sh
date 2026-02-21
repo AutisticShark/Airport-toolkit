@@ -52,16 +52,16 @@ do_init(){
 
     if [[ ${arch} == "x64" ]]; then
         mkdir 7z
-        wget https://www.7-zip.org/a/7z2501-linux-x64.tar.xz
-        tar -xf 7z2501-linux-x64.tar.xz -C 7z
+        wget https://www.7-zip.org/a/7z2600-linux-x64.tar.xz
+        tar -xf 7z2600-linux-x64.tar.xz -C 7z
         mv -f 7z/7zzs /usr/bin/7z
-        rm -r 7z2501-linux-x64.tar.xz 7z
+        rm -r 7z2600-linux-x64.tar.xz 7z
     elif [[ ${arch} == "arm64" ]]; then
         mkdir 7z
-        wget https://www.7-zip.org/a/7z2501-linux-arm64.tar.xz
-        tar -xf 7z2501-linux-arm64.tar.xz -C 7z
+        wget https://www.7-zip.org/a/7z2600-linux-arm64.tar.xz
+        tar -xf 7z2600-linux-arm64.tar.xz -C 7z
         mv -f 7z/7zzs /usr/bin/7z
-        rm -r 7z2501-linux-arm64.tar.xz 7z
+        rm -r 7z2600-linux-arm64.tar.xz 7z
     fi
 }
 
