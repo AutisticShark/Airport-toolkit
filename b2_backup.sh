@@ -48,7 +48,7 @@ do_init(){
         apt install python3-pip -y
     fi
 
-    pip3 install b2 --break-system-packages
+    pip3 install b2 --break-system-packages --root-user-action
 
     if [[ ${arch} == "x64" ]]; then
         mkdir 7z
@@ -66,7 +66,7 @@ do_init(){
 }
 
 do_upgrade(){
-    pip3 install --upgrade b2
+    pip3 install --upgrade b2 --break-system-packages --root-user-action
 }
 
 do_reset_config(){
@@ -79,7 +79,7 @@ do_pack_db(){
         db_file_name="$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-db.7z"
         db_file_hash="$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-db.7z.sha3"
         mariadb-dump -u $db_user -p$db_password -h $db_host $db_name > $db_file_sql
-        7z a -mx9 $db_file_name $db_file_sql
+        7z a -mx9 -mmt=1 $db_file_name $db_file_sql
         openssl dgst -sha3-256 $db_file_name | awk '{print $2}' > $db_file_hash
         rm $db_file_sql
     elif [[ ${compress_method} == "zip" ]]; then
@@ -100,7 +100,7 @@ do_pack_website(){
     if [[ ${compress_method} == "7z" ]]; then
         website_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-web.7z
         website_file_hash=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-web.7z.sha3
-        7z a -mx9 $website_file_name $website_dir
+        7z a -mx9 -mmt=1 $website_file_name $website_dir
         openssl dgst -sha3-256 $website_file_name | awk '{print $2}' > $website_file_hash
     elif [[ ${compress_method} == "zip" ]]; then
         website_file_name=$(date +'%Y-%m-%d-%H-%M-%S')-$backup_name-web.zip

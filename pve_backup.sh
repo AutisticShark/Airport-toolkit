@@ -19,11 +19,11 @@ b2_bucket_name=""
 do_init(){
     apt update -y
     apt install python3-pip -y
-    pip3 install b2 --break-system-packages
+    pip3 install b2 --break-system-packages --root-user-action
 }
 
 do_upgrade(){
-    pip3 install --upgrade b2 --break-system-packages
+    pip3 install --upgrade b2 --break-system-packages --root-user-action
 }
 
 do_upload_b2(){
