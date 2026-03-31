@@ -8,4 +8,4 @@ db_password=''
 db_user=""
 db_host=""
 website_dir=""
-compress_method="" # 7z or zip
+compress_method=""
