@@ -1,0 +1,10 @@
+# Virtfusion Backup Script Configuration File
+# Save this file securely (contains B2 credentials)
+
+backup_name="virtfusion-control"
+b2_app_key_id="YOUR_B2_APP_KEY_ID"
+b2_app_key="YOUR_B2_APP_KEY"
+b2_bucket_name="YOUR_B2_BUCKET_NAME"
+
+# Compression method to use. Supported: xz, zip
+compress_method="xz"

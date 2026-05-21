@@ -7,8 +7,14 @@ import subprocess
 import sys
 from datetime import datetime
 
-from b2sdk.v2.exception import B2Error
-from b2sdk.v2 import B2Api, InMemoryAccountInfo
+try:
+    from b2sdk.v2.exception import B2Error
+    from b2sdk.v2 import B2Api, InMemoryAccountInfo
+except ImportError:
+    # We will handle import error gracefully or prompt user to run init
+    B2Error = Exception
+    B2Api = None
+    InMemoryAccountInfo = None
 
 # --- Helper Functions ---
 
@@ -18,7 +24,7 @@ def check_root():
         print("Error: You must be root to run this script!", file=sys.stderr)
         sys.exit(1)
 
-def run_command(command, capture_output=False, text=True, **kwargs):
+def run_command(command, capture_output=False, text=True, stdout=None, **kwargs):
     """
     Helper to run a subprocess, with better error reporting.
     Exits the script on failure.
@@ -32,6 +38,7 @@ def run_command(command, capture_output=False, text=True, **kwargs):
             check=True,
             capture_output=capture_output,
             text=text,
+            stdout=stdout,
             **kwargs
         )
         return result
@@ -51,22 +58,14 @@ def get_os_name():
     """Detects the OS distribution."""
     if os.path.exists('/etc/redhat-release'):
         return "rhel"
-    # Check for debian/ubuntu variants
     elif os.path.exists('/etc/debian_version'):
         return "debian"
     else:
+        # Check system platform as a fallback
+        plat = platform.system().lower()
+        if "linux" in plat:
+            return "debian" # Default to debian-like behavior for linux fallback
         print("Unknown OS", file=sys.stderr)
-        sys.exit(1)
-
-def get_arch():
-    """Detects the system architecture."""
-    arch = platform.machine()
-    if arch in ("x86_64", "x64", "amd64"):
-        return "x64"
-    elif arch in ("aarch64", "arm64"):
-        return "arm64"
-    else:
-        print(f"Unknown or unsupported architecture: {arch}", file=sys.stderr)
         sys.exit(1)
 
 def parse_config(file_path):
@@ -94,6 +93,36 @@ def parse_config(file_path):
         sys.exit(1)
     return config
 
+def get_virtfusion_db_name(env_path="/opt/virtfusion/app/control/.env"):
+    """
+    Parses Virtfusion's DB_DATABASE value from its .env file.
+    Equivalent to: cat /opt/virtfusion/app/control/.env | grep 'DB_DATABASE' | cut -d'"' -f2
+    Robust to potential spaces around '='.
+    """
+    if not os.path.exists(env_path):
+        print(f"Error: Virtfusion .env file not found at {env_path}", file=sys.stderr)
+        sys.exit(1)
+    
+    try:
+        with open(env_path, 'r') as f:
+            for line in f:
+                stripped = line.strip()
+                if not stripped or stripped.startswith('#'):
+                    continue
+                if '=' in stripped:
+                    key, val = stripped.split('=', 1)
+                    if key.strip() == 'DB_DATABASE':
+                        # Handle both double-quoted, single-quoted, and unquoted values
+                        db_name = val.strip().strip('"\'')
+                        if db_name:
+                            return db_name
+    except Exception as e:
+        print(f"Error reading {env_path}: {e}", file=sys.stderr)
+        sys.exit(1)
+
+    print("Error: DB_DATABASE could not be parsed from Virtfusion .env file", file=sys.stderr)
+    sys.exit(1)
+
 # --- Core Logic Functions ---
 
 def do_init():
@@ -106,16 +135,15 @@ def do_init():
     # Install packages
     if os_name == "rhel":
         run_command(["dnf", "update", "-y"])
-        run_command(["dnf", "install", "xz", "zip", "python3-pip", "-y"])
+        run_command(["dnf", "install", "xz", "zip", "python3-pip", "mariadb", "-y"])
     elif os_name == "debian": # Covers Ubuntu as well
         run_command(["apt", "update", "-y"])
-        run_command(["apt", "install", "xz-utils", "zip", "python3-pip", "-y"])
+        run_command(["apt", "install", "xz-utils", "zip", "python3-pip", "mariadb-client", "-y"])
 
     # Install b2 CLI
     run_command(["pip3", "install", "b2", "--break-system-packages", "--ignore-installed", "--root-user-action", "ignore"])
     
     print("--- Initialization Complete ---")
-
 
 def do_upgrade():
     """Upgrade b2 cli."""
@@ -123,9 +151,12 @@ def do_upgrade():
     run_command(["pip3", "install", "--upgrade", "b2", "--break-system-packages", "--ignore-installed", "--root-user-action", "ignore"])
     print("--- Upgrade Complete ---")
 
-
 def do_backup(config_files, target='all'):
-    """Backup websites & databases based on config files."""
+    """Backup Virtfusion database and control panel files based on config files."""
+    if B2Api is None:
+        print("Error: b2 sdk is not installed. Please run 'init' first.", file=sys.stderr)
+        sys.exit(1)
+
     # Change to script's directory to match shell script behavior
     script_path = os.path.dirname(os.path.realpath(__file__))
     os.chdir(script_path)
@@ -143,25 +174,19 @@ def do_backup(config_files, target='all'):
 
         files_to_upload = []
         
-        # 1. Pack Database
+        # 1. Pack Virtfusion Database
         if target in ['all', 'db']:
-            if all(key in config and config[key] for key in ['db_name', 'db_user', 'db_host']):
-                print("Backing up database...")
-                db_files = pack_item(config, 'db')
-                if db_files:
-                    files_to_upload.extend(db_files)
-            else:
-                print("Skipping database backup (db config missing or incomplete).")
+            print("Backing up Virtfusion database...")
+            db_files = pack_item(config, 'db')
+            if db_files:
+                files_to_upload.extend(db_files)
 
-        # 2. Pack Website
-        if target in ['all', 'web']:
-            if 'website_dir' in config and config['website_dir']:
-                print("Backing up website...")
-                web_files = pack_item(config, 'web')
-                if web_files:
-                    files_to_upload.extend(web_files)
-            else:
-                print("Skipping website backup (website_dir not set).")
+        # 2. Pack Virtfusion App Files
+        if target in ['all', 'app']:
+            print("Backing up Virtfusion control panel files...")
+            app_files = pack_item(config, 'app')
+            if app_files:
+                files_to_upload.extend(app_files)
         
         # 3. Upload to B2
         if files_to_upload:
@@ -172,10 +197,9 @@ def do_backup(config_files, target='all'):
 
         print(f"--- Finished processing {config_file} ---")
 
-
 def pack_item(config, item_type):
     """
-    Generic packing function for database ('db') or website ('web').
+    Generic packing function for Virtfusion database ('db') or control panel app ('app').
     Returns a list of generated file paths (archive and hash).
     """
     timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
@@ -190,10 +214,9 @@ def pack_item(config, item_type):
     
     # Determine archive filename based on compression method
     if compress_method == 'xz':
-        # For websites, we create a tarball, so .tar.xz is conventional
-        if item_type == 'web':
+        if item_type == 'app':
             archive_filename = f"{base_filename}.tar.xz"
-        else: # For db, it's a single sql file
+        else: # db
             archive_filename = f"{base_filename}.sql.xz"
     else: # zip
         archive_filename = f"{base_filename}.zip"
@@ -202,27 +225,43 @@ def pack_item(config, item_type):
     
     source_path = None
     try:
-        # Step 1: Create source data (dump for DB, use dir for web)
+        # Step 1: Create source data (dump for DB, use dir for app)
         if item_type == 'db':
+            db_name = get_virtfusion_db_name()
             source_path = f"{timestamp}-{backup_name}.sql"
-            db_password = config.get('db_password', '')
-            dump_cmd = ["mariadb-dump", "-u", config['db_user'], f"-p{db_password}", "-h", config['db_host'], config['db_name']]
+            
+            # We first try mariadb-dump as it is the correct utility for SQL exports.
+            # Fall back to mysqldump if mariadb-dump is missing.
+            dump_utility = "mariadb-dump"
+            if not os.path.exists("/usr/bin/mariadb-dump") and not os.path.exists("/usr/local/bin/mariadb-dump"):
+                # Check using which
+                try:
+                    subprocess.run(["which", "mariadb-dump"], check=True, capture_output=True)
+                except (subprocess.CalledProcessError, FileNotFoundError):
+                    dump_utility = "mysqldump"
+
+            print(f"Exporting database '{db_name}' using {dump_utility}...")
+            dump_cmd = [dump_utility, "--user=root", db_name]
+            
             with open(source_path, 'w') as f:
                 run_command(dump_cmd, stdout=f)
-        elif item_type == 'web':
-            source_path = config['website_dir']
+                
+        elif item_type == 'app':
+            source_path = "/opt/virtfusion/app"
+            if not os.path.exists(source_path):
+                print(f"Error: Virtfusion app directory {source_path} does not exist!", file=sys.stderr)
+                return []
 
         # Step 2: Compress the data
         print(f"Compressing using {compress_method}...")
         if compress_method == 'xz':
-            if item_type == 'web':
-                # To avoid storing full paths in the tar, change dir to the parent of the source
+            if item_type == 'app':
+                # To avoid storing full paths in the tar, change dir to parent
                 parent_dir = os.path.dirname(os.path.abspath(source_path))
                 base_name = os.path.basename(source_path)
                 compress_cmd = ["tar", "-cJf", archive_filename, "-C", parent_dir, base_name]
                 run_command(compress_cmd)
             else: # db
-                # Compress the single .sql file, sending output to stdout and capturing it
                 with open(archive_filename, 'wb') as f_out:
                     compress_cmd = ["xz", "-c", "-9", source_path]
                     run_command(compress_cmd, stdout=f_out)
@@ -236,13 +275,12 @@ def pack_item(config, item_type):
         with open(hash_filename, 'w') as f:
             f.write(file_hash)
 
-        # Return the archive and hash file for uploading
         return [archive_filename, hash_filename]
+        
     finally:
         # Clean up intermediate files (like the .sql dump)
         if item_type == 'db' and source_path and os.path.exists(source_path):
             os.remove(source_path)
-
 
 def upload_to_b2(config, files_to_upload):
     """Authorizes and uploads files to B2 using the b2sdk, then cleans them up."""
@@ -273,29 +311,30 @@ def upload_to_b2(config, files_to_upload):
         print(f"Error during B2 operation or file cleanup: {e}", file=sys.stderr)
         sys.exit(1)
 
-
 # --- Main Execution ---
 
 def main():
     """Main function to parse arguments and execute commands."""
-    check_root()
+    # Only enforce root check if on Linux/Unix systems (non-Windows local testing)
+    if platform.system().lower() != "windows":
+        check_root()
 
     parser = argparse.ArgumentParser(
-        description="Python script to backup website & database to B2 Cloud Storage.\nUsage:\n  b2_backup.py init\n  b2_backup.py upgrade\n  b2_backup.py backup [--target {all,db,web} | --web | --db] <config1> [config2 ...]",
+        description="Python script to backup Virtfusion control server database & files to B2 Cloud Storage.\nUsage:\n  virtfusion_backup.py init\n  virtfusion_backup.py upgrade\n  virtfusion_backup.py backup [--target {all,db,app} | --app | --db] <config1> [config2 ...]",
         formatter_class=argparse.RawTextHelpFormatter
     )
     subparsers = parser.add_subparsers(dest='command', required=True, help='Available commands')
 
-    parser_init = subparsers.add_parser('init', help='First time setup for this script')
+    parser_init = subparsers.add_parser('init', help='First time setup (installs clients and B2 SDK)')
     parser_init.set_defaults(func=do_init)
 
-    parser_upgrade = subparsers.add_parser('upgrade', help='Upgrade b2 cli')
+    parser_upgrade = subparsers.add_parser('upgrade', help='Upgrade B2 CLI')
     parser_upgrade.set_defaults(func=do_upgrade)
 
-    parser_backup = subparsers.add_parser('backup', help='Backup your website & database to B2 Cloud Storage')
+    parser_backup = subparsers.add_parser('backup', help='Run Virtfusion backup to B2')
     target_group = parser_backup.add_mutually_exclusive_group()
-    target_group.add_argument('--target', choices=['all', 'db', 'web'], default='all', help='Specify what to backup: all (default), db, or web.')
-    target_group.add_argument('--web', action='store_const', const='web', dest='target', help='Shortcut to backup only the website.')
+    target_group.add_argument('--target', choices=['all', 'db', 'app'], default='all', help='Specify what to backup: all (default), db, or app.')
+    target_group.add_argument('--app', action='store_const', const='app', dest='target', help='Shortcut to backup only control panel files.')
     target_group.add_argument('--db', action='store_const', const='db', dest='target', help='Shortcut to backup only the database.')
     parser_backup.add_argument('config_files', nargs='+', help='One or more config files to process')
     parser_backup.set_defaults(func=do_backup)
