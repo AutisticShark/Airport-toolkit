@@ -1,0 +1,28 @@
+# Docker Container Backup Script Configuration File
+# Save this file securely (contains B2 credentials)
+
+docker_host="node-01"
+
+# --- Container & Data Directory Configuration Options ---
+# Option 1: Multi-line 'containers' list (Format: "container_name:data_path1[:data_path2]")
+# containers="
+#   nginx:/var/lib/docker/volumes/nginx_data/_data
+#   mysql:/var/lib/docker/volumes/mysql_data/_data
+#   redis:/var/lib/docker/volumes/redis_data/_data
+# "
+
+# Option 2: Comma-separated containers and matching data locations
+# container_name="nginx, mysql, redis"
+# data_location="/var/lib/docker/volumes/nginx_data/_data, /var/lib/docker/volumes/mysql_data/_data, /var/lib/docker/volumes/redis_data/_data"
+
+# Option 3: Single container with one or multiple data directories (comma-separated)
+container_name="my-container"
+data_location="/var/lib/docker/volumes/my-container-data/_data"
+
+# --- Backblaze B2 Settings ---
+b2_app_key_id="YOUR_B2_APP_KEY_ID"
+b2_app_key="YOUR_B2_APP_KEY"
+b2_bucket_name="YOUR_B2_BUCKET_NAME"
+
+# Compression method to use. Supported: xz, zip
+compress_method="xz"
