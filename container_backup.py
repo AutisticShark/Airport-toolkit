@@ -55,6 +55,32 @@ def run_command(command, capture_output=False, text=True, stdout=None, **kwargs)
                 print(f"STDERR:\n{e.stderr}", file=sys.stderr)
         sys.exit(e.returncode)
 
+# GNU tar exits 1 when a file changes or vanishes while it is being read (logs,
+# sessions, invoice PDFs, files of running services). The archive is still
+# valid, so only exit codes >= 2 are fatal.
+TAR_LIVE_DATA_FLAGS = ["--warning=no-file-changed", "--warning=no-file-removed", "--ignore-failed-read"]
+
+def run_tar(command, archive_filename):
+    """
+    Run a tar command over live data. Exit code 1 counts as success; on a real
+    failure the partial archive is removed and the script exits.
+    """
+    command = [str(c) for c in command]
+    command = command[:1] + TAR_LIVE_DATA_FLAGS + command[1:]
+    print(f"Executing: {' '.join(shlex.quote(c) for c in command)}")
+    try:
+        returncode = subprocess.run(command).returncode
+    except FileNotFoundError:
+        print(f"Error: Command '{command[0]}' not found. Is it installed and in your PATH?", file=sys.stderr)
+        sys.exit(1)
+    if returncode == 1:
+        print("Warning: some files changed while tar was reading them; archive kept.", file=sys.stderr)
+    elif returncode != 0:
+        print(f"Error running command: {' '.join(command)} (exit code {returncode})", file=sys.stderr)
+        if os.path.exists(archive_filename):
+            os.remove(archive_filename)
+        sys.exit(returncode)
+
 def get_os_name():
     """Detects the OS distribution."""
     if os.path.exists('/etc/redhat-release'):
@@ -319,7 +345,7 @@ def pack_container_data(config, container_name, data_locations):
                     p_dir = os.path.dirname(p)
                     b_name = os.path.basename(p)
                     compress_cmd.extend(["-C", p_dir, b_name])
-                run_command(compress_cmd)
+                run_tar(compress_cmd, archive_filename)
         elif compress_method == 'zip':
             archive_abs_path = os.path.abspath(archive_filename)
             for p in valid_paths:
